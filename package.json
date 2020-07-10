@@ -1,0 +1,33 @@
+{
+  "name": "project-1-sainserto",
+  "version": "1.0.0",
+  "description": "revpro2",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2006NodeDev/project-1-sainserto.git"
+  },
+  "author": "Syvyl Arlette Inserto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2006NodeDev/project-1-sainserto/issues"
+  },
+  "homepage": "https://github.com/2006NodeDev/project-1-sainserto#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "pg": "^8.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.7",
+    "@types/express-session": "^1.17.0",
+    "@types/pg": "^7.14.3",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.6"
+  }
+}
