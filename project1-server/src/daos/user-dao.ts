@@ -7,6 +7,7 @@ import { User } from "../models/User";
 // import { UserInputError } from "../errors/UserInputError";
 import { BadCredentialsError } from "../errors/BadCredentialsError";
 import { UserInputError } from "../errors/UserInputError";
+// import { Specialty } from "../models/Specialty";
 
 //create user
 
@@ -127,6 +128,33 @@ export async function findUserById(id: number) {
     }
 }
 
+
+//get users by specialty
+export async function findUserBySpecialty(specialty: any) {
+    let client: PoolClient
+    try {
+        client = await connectionPool.connect()
+        let results: QueryResult = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", r."role_id", r."role", s."specialty_id", s."specialty"
+        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where s."specialty" = $1;`,[specialty])
+        if (results.rowCount === 0) {
+            throw new Error('User Not Found')
+        } else {
+            return results.rows.map(UserDTOtoUserConverter)
+            // return results.rows[0]
+            // return UserDTOtoUserConverter(results.rows[0])
+        }
+    } catch (e) {
+        if (e.message === 'User Not Found') {
+            throw new UserNotFoundError()
+        }
+        throw new Error('Unimplemented Error Handling')
+
+    } finally {
+        client && client.release()
+    }
+}
+
+
 //logging in
 export async function getUserByUsernameAndPassword(username: string, password: string): Promise<User> {
     let client: PoolClient
@@ -143,8 +171,8 @@ export async function getUserByUsernameAndPassword(username: string, password: s
                                         u."description"
                                         from tutorialhub.users u 
                                         left join tutorialhub.roles r on u."role" = r.role_id
-                                            where u."username" = $1 and u."password" = $2;`, 
-                                            [username, password])
+                                            where u."username" = $1 and u."password" = $2;`,
+            [username, password])
         if (results.rowCount === 0) {
             throw new Error('User Not Found')
         }
@@ -165,7 +193,7 @@ export async function getUserByUsernameAndPassword(username: string, password: s
 }
 
 
-export async function updateUser(user:User): Promise<User> {
+export async function updateUser(user: User): Promise<User> {
     let client: PoolClient
     try {
         client = await connectionPool.connect()
@@ -179,78 +207,78 @@ export async function updateUser(user:User): Promise<User> {
             // return UserDTOtoUserConverter(userId.rows[0])
         }
 
-        if(user.username != undefined){
+        if (user.username != undefined) {
             let updateResults = await client.query(`update tutorialhub.users 
-            set "username" = $1 where user_id = $2;`,[user.username, userId])
+            set "username" = $1 where user_id = $2;`, [user.username, userId])
             console.log(updateResults.rows[0])
         }
 
-        if(user.firstName != undefined){
+        if (user.firstName != undefined) {
             let updateResults = await client.query(`update tutorialhub.users 
-            set "first_name" = $1 where user_id = $2;`,[user.firstName, userId])
+            set "first_name" = $1 where user_id = $2;`, [user.firstName, userId])
             console.log(updateResults.rows[0])
         }
-        if(user.lastName != undefined){
+        if (user.lastName != undefined) {
             let updateResults = await client.query(`update tutorialhub.users 
-            set "last_name" = $1 where user_id = $2;`,[user.lastName, userId])
+            set "last_name" = $1 where user_id = $2;`, [user.lastName, userId])
             console.log(updateResults.rows[0])
         }
-        if(user.email != undefined){
+        if (user.email != undefined) {
             let updateResults = await client.query(`update tutorialhub.users 
-            set "email" = $1 where user_id = $2;`,[user.email, userId])
+            set "email" = $1 where user_id = $2;`, [user.email, userId])
             console.log(updateResults.rows[0])
         }
-        if(user.phoneNumber != undefined){
+        if (user.phoneNumber != undefined) {
             let updateResults = await client.query(`update tutorialhub.users 
-            set "phone" = $1 where user_id = $2;`,[user.phoneNumber, userId])
-            console.log(updateResults.rows[0])
-        }
-
-        if(user.description != undefined){
-            let updateResults = await client.query(`update tutorialhub.users 
-            set "description" = $1 where user_id = $2;`,[user.description, userId])
+            set "phone" = $1 where user_id = $2;`, [user.phoneNumber, userId])
             console.log(updateResults.rows[0])
         }
 
-        if(user.role != undefined){
+        if (user.description != undefined) {
+            let updateResults = await client.query(`update tutorialhub.users 
+            set "description" = $1 where user_id = $2;`, [user.description, userId])
+            console.log(updateResults.rows[0])
+        }
+
+        if (user.role != undefined) {
             let roleId = await client.query(`select r.role_id from tutorialhub.roles r where r.role = $1`, [user.role])
-            
-            if(roleId.rowCount === 0){
+
+            if (roleId.rowCount === 0) {
                 throw new Error('Role Not Found.')
             }
             roleId = roleId.rows[0].role_id
 
             let updateResults = await client.query(`update tutorialhub.users 
-            set "role" = $1 where user_id = $2;`,[roleId, userId])
+            set "role" = $1 where user_id = $2;`, [roleId, userId])
             console.log(updateResults.rows[0])
         }
 
-        
-        if(user.specialty != undefined){
+
+        if (user.specialty != undefined) {
             console.log("found specialty");
-            
+
             let specialtyId = await client.query(`select s.specialty_id from tutorialhub.specialty s where s.specialty = $1`, [user.specialty])
-            
-            if(specialtyId.rowCount === 0){
+
+            if (specialtyId.rowCount === 0) {
                 throw new Error('Specialty Not Found.')
             }
             specialtyId = specialtyId.rows[0].specialty_id
 
             let updateResults = await client.query(`update tutorialhub.users 
-            set "specialty" = $1 where user_id = $2;`,[specialtyId, userId])
+            set "specialty" = $1 where user_id = $2;`, [specialtyId, userId])
             console.log(updateResults.rows[0])
         }
 
-        let result:QueryResult = await client.query(`select u.user_id, u.username , u."password", u.first_name,
+        let result: QueryResult = await client.query(`select u.user_id, u.username , u."password", u.first_name,
         u.last_name, u.email ,r.role_id , r."role", s."specialty" from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id 
         left join tutorialhub.specialty s on u."specialty" = s."specialty_id"
-        where u.user_id = $1;`,[userId])
+        where u.user_id = $1;`, [userId])
         await client.query('COMMIT;')
         return UserDTOtoUserConverter(result.rows[0])
         // return result.rows[0]
 
     } catch (e) {
-        if (e.message === 'User Not Found') {         
+        if (e.message === 'User Not Found') {
             throw new UserNotFoundError()
         }
         throw new Error(e)

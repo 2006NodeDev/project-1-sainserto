@@ -3,7 +3,7 @@ import { User } from '../models/User'
 import { UserIdInputError } from '../errors/UserIdInputError'
 // import { authenticationMiddleware } from '../middleware/authentication-middleware'
 // import { authorizationMiddleware } from '../middleware/authorization-middleware'
-import { getAllUsers, updateUser, saveOneUser, findUserById } from '../daos/user-dao'
+import { getAllUsers, updateUser, saveOneUser, findUserById, findUserBySpecialty } from '../daos/user-dao'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
 import { UserInputError } from '../errors/UserInputError'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
@@ -76,10 +76,6 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
     console.log(req.session.user.role)
     console.log(req.session.user.user_id)
 
-    
-    
-    
-    
     let { id } = req.params
         if (isNaN(+id)) {
             next(new UserIdInputError())
@@ -103,6 +99,20 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
             }
         }
     })
+
+//get users by specialty
+
+userRouter.get('/specialty/:specialty', async (req: Request, res: Response, next: NextFunction) => {
+    let { specialty } = req.params
+            try {
+                let user = await findUserBySpecialty(specialty)
+                res.json(user)
+            } catch (e) {
+                next(new UserNotFoundError())
+            }
+    })
+
+
 
 //create user
 // userRouter.post('/', authorizationMiddleware(['admin']), async (req: Request, res: Response, next: NextFunction) => {
