@@ -8,7 +8,7 @@
       "sourceMap": true,
       "allowJs": true,
       "moduleResolution": "node",
-      "rootDir": "project1-server/src",
+      "rootDir": "src",
       "forceConsistentCasingInFileNames": true,
       "noImplicitReturns": true,
       "noImplicitThis": true,
