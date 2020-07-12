@@ -3,7 +3,7 @@ import { User } from '../models/User'
 import { UserIdInputError } from '../errors/UserIdInputError'
 // import { authenticationMiddleware } from '../middleware/authentication-middleware'
 // import { authorizationMiddleware } from '../middleware/authorization-middleware'
-import { getAllUsers, updateUser, saveOneUser, findUserById, findUserBySpecialty } from '../daos/user-dao'
+import { getAllUsers, updateUser, saveOneUser, findUserById, findUserBySpecialty, findUserByRole } from '../daos/user-dao'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
 import { UserInputError } from '../errors/UserInputError'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
@@ -112,7 +112,17 @@ userRouter.get('/specialty/:specialty', async (req: Request, res: Response, next
             }
     })
 
+//get users by role
 
+userRouter.get('/role/:role', async (req: Request, res: Response, next: NextFunction) => {
+    let { role } = req.params
+            try {
+                let user = await findUserByRole(role)
+                res.json(user)
+            } catch (e) {
+                next(new UserNotFoundError())
+            }
+    })
 
 //create user
 // userRouter.post('/', authorizationMiddleware(['admin']), async (req: Request, res: Response, next: NextFunction) => {

@@ -155,6 +155,32 @@ export async function findUserBySpecialty(specialty: any) {
 }
 
 
+//find users by role
+
+export async function findUserByRole(role: any) {
+    let client: PoolClient
+    try {
+        client = await connectionPool.connect()
+        let results: QueryResult = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", r."role_id", r."role", s."specialty_id", s."specialty"
+        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where r."role" = $1;`,[role])
+        if (results.rowCount === 0) {
+            throw new Error('User Not Found')
+        } else {
+            return results.rows.map(UserDTOtoUserConverter)
+            // return results.rows[0]
+            // return UserDTOtoUserConverter(results.rows[0])
+        }
+    } catch (e) {
+        if (e.message === 'User Not Found') {
+            throw new UserNotFoundError()
+        }
+        throw new Error('Unimplemented Error Handling')
+
+    } finally {
+        client && client.release()
+    }
+}
+
 //logging in
 export async function getUserByUsernameAndPassword(username: string, password: string): Promise<User> {
     let client: PoolClient
