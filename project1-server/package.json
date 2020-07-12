@@ -7,16 +7,8 @@
     "start": "nodemon --exec ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/2006NodeDev/project-1-sainserto.git"
-  },
   "author": "Syvyl Arlette Inserto",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/2006NodeDev/project-1-sainserto/issues"
-  },
-  "homepage": "https://github.com/2006NodeDev/project-1-sainserto#readme",
   "dependencies": {
     "express": "^4.17.1",
     "express-session": "^1.17.1",
