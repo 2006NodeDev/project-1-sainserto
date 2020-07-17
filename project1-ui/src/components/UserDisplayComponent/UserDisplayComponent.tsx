@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, SyntheticEvent } from 'react'
 import { User } from '../../models/User'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
+const editProfile = async (e: SyntheticEvent) => {
+   // props.history.push(`edit/${user.userId}`)
+}
 
 
 export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)=>{
@@ -36,10 +39,16 @@ export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)
         <div className={classes.root}>
             <Paper className={classes.paper}elevation={4}>
             <Typography variant='body1'>
-                   Username : {props.user.username}
+                   About me : {props.user.description}
+                </Typography>
+            <Typography variant='body1'>
+                   Username : {props.user.username}  
                 </Typography>
                 <Typography variant='body1'>
                    Email : {props.user.email}
+                </Typography>
+                <Typography variant='body1'>
+                   Phone : {props.user.phoneNumber}
                 </Typography>
                 <Typography variant='body1'>
                    First Name : {props.user.firstName}
@@ -48,15 +57,15 @@ export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)
                    Last Name : {props.user.lastName}
                 </Typography>
                 <Typography variant='body1'>
-                   Role : {props.user.role.role}
+                   Role : {props.user.role}
                 </Typography>
                 <Typography variant='body1'>
-                   Specialty : {props.user.specialty.specialty}
+                   Specialty : {props.user.specialty}
                 </Typography>
-                <Typography variant='body1'>
-                   About me : {props.user.description}
-                </Typography>
+               <form onSubmit={editProfile}>
                 <Button variant='contained' color='inherit'>Edit</Button>
+
+               </form>
             </Paper>
         </div>
     )

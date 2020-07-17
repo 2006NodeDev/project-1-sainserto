@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,8 +10,6 @@ import Menu from '@material-ui/core/Menu'
 import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem'
 import {Link} from 'react-router-dom'
-
-
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NavBarComponent:FunctionComponent<any> = (props) => {
 
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -89,16 +87,23 @@ export const NavBarComponent:FunctionComponent<any> = (props) => {
     if(props.user){
         //if they are logged in, add the other items
         menuItems.push(
-        <MenuItem onClick={handleClose}><Link to={`/profile/${(props.user)?props.user.userId : '0' }`}>My Profile</Link></MenuItem>,
+        <MenuItem onClick={handleClose}><Link to={`/profile/${(props.user)?props.user.user_id : '0' }`}>My Profile</Link></MenuItem>,
 
-        <MenuItem onClick={handleClose}><Link to='/role/tutor'>Tutors</Link></MenuItem>,
+        <MenuItem onClick={handleClose}><Link to='/tutors'>Tutors</Link></MenuItem>,
         <MenuItem onClick={handleClose}><Link to='/bookmarks'>Bookmarks</Link></MenuItem>,
         <MenuItem onClick={handleClose}><Link to='/logout'>Logout</Link></MenuItem>)
     }
     else{
-    menuItems.push(<MenuItem onClick={handleClose}><Link to='/login'>Login</Link></MenuItem>)
+    menuItems.push(<MenuItem onClick={handleClose}><Link to='/login'>Login</Link></MenuItem>,
+    <MenuItem onClick={handleClose}><Link to='/signup'>Sign Up</Link></MenuItem>)
+
 
     }
+
+    if(props.user && props.user.role === 'admin'){
+      menuItems.push(<MenuItem onClick={handleClose}><Link to='/users'>All Users</Link></MenuItem>,)
+  }
+
 
     return (
         <div className={classes.root}>

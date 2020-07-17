@@ -21,9 +21,6 @@ export const ProfileComponent: FunctionComponent<any> = (props) => {
     }
 })
 
-
-
-
 return (
     (userProfile)?
         <UserDisplayComponent user={userProfile} />
