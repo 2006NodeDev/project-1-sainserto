@@ -3,12 +3,13 @@ import { User } from '../models/User'
 import { UserIdInputError } from '../errors/UserIdInputError'
 // import { authenticationMiddleware } from '../middleware/authentication-middleware'
 // import { authorizationMiddleware } from '../middleware/authorization-middleware'
-import { getAllUsers, updateUser, saveOneUser, findUserById, findUserBySpecialty, findUserByRole } from '../daos/user-dao'
+// import { getAllUsers, updateUser, saveOneUser, findUserById, findUserBySpecialty, findUserByRole } from '../daos/SQL/user-dao'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
 import { UserInputError } from '../errors/UserInputError'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
 // import { authenticationMiddleware } from '../middleware/authentication-middleware'
 import { UserNotFoundError } from '../errors/UserNotFoundError'
+import { saveOneUserService, updateUserService, findUserByRoleService, findUserBySpecialtyService, findUserByIDService, getAllUsersService } from '../services/user-service'
 
 export const userRouter = express.Router()
 // userRouter.use(authenticationMiddleware)
@@ -19,7 +20,7 @@ export const userRouter = express.Router()
 userRouter.get('/',  async (req: Request, res: Response, next: NextFunction) => {
     
     try {
-        let allUsers = await getAllUsers()
+        let allUsers = await getAllUsersService()
         res.json(allUsers)
     } catch (e) {
         next(e)
@@ -81,14 +82,14 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
             next(new UserIdInputError())
         } else if (req.session.user.role === 'admin') {
             try {
-                let user = await findUserById(+id)
+                let user = await findUserByIDService(+id)
                 res.json(user)
             } catch (e) {
                 next(new UserNotFoundError())
             }
         } else if (req.session.user.role === 'tutor' || req.session.user.role === 'student') {
             try {
-                let user = await findUserById(+id)
+                let user = await findUserByIDService(+id)
                 if (req.session.user.user_id === user.userId) {
                     res.json(user)
                 } else {
@@ -105,7 +106,7 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
 userRouter.get('/specialty/:specialty', async (req: Request, res: Response, next: NextFunction) => {
     let { specialty } = req.params
             try {
-                let user = await findUserBySpecialty(specialty)
+                let user = await findUserBySpecialtyService(specialty)
                 res.json(user)
             } catch (e) {
                 next(new UserNotFoundError())
@@ -117,7 +118,7 @@ userRouter.get('/specialty/:specialty', async (req: Request, res: Response, next
 userRouter.get('/role/:role', async (req: Request, res: Response, next: NextFunction) => {
     let { role } = req.params
             try {
-                let user = await findUserByRole(role)
+                let user = await findUserByRoleService(role)
                 res.json(user)
             } catch (e) {
                 next(new UserNotFoundError())
@@ -129,7 +130,7 @@ userRouter.get('/role/:role', async (req: Request, res: Response, next: NextFunc
 userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 
-    let { username, password, firstName, lastName, email, role, phoneNumber, specialty, description} = req.body
+    let { username, password, firstName, lastName, email, role, phoneNumber, specialty, description, image} = req.body
     if (!username || !password || !firstName || !lastName || !email || !phoneNumber || !role) {
         next(new UserInputError)
         // console.log('YOU DIDNT FILL OUT ALL FIELDS');
@@ -145,13 +146,14 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
             phoneNumber,
             specialty,
             description,
-            userId:0
+            userId:0,
+            image
         }
         newUser.role = role || "student"
         newUser.specialty = specialty || "none"
 
         try {
-            let savedUser = await saveOneUser(newUser)
+            let savedUser = await saveOneUserService(newUser)
             // res.sendStatus(201).json(savedUser)
             res.json(savedUser)
         } catch (e) {
@@ -180,14 +182,15 @@ userRouter.patch('/', async (req: Request, res: Response, next: NextFunction) =>
         role: req.body.role,
         phoneNumber: req.body.phoneNumber,
         specialty: req.body.specialty,
-        description: req.body.description
+        description: req.body.description,
+        image:req.body.image
     }
     let id = newUser.userId
     if (isNaN(id)) {
         next(new UserIdInputError)
     }
     try {
-        let savedUser = await updateUser(newUser)
+        let savedUser = await updateUserService(newUser)
         res.json(savedUser)
     } catch (e) {
         console.log(e)

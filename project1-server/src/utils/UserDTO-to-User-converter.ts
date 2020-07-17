@@ -25,6 +25,7 @@ export function UserDTOtoUserConverter(udto: UserDTO): User {
         //     specialtyId: udto.specialty_id,
         //     specialty: udto.specialty
         // },
-        description: udto.description
+        description: udto.description,
+        image: udto.image
     }
 }

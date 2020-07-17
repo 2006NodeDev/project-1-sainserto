@@ -11,4 +11,5 @@ export class UserDTO{
     specialty: string
     specialty_id: number
     description: string
+    image?: string
 }

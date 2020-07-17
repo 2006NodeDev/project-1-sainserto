@@ -12,4 +12,5 @@ export class User{
     phoneNumber: string
     specialty: string
     description: string
+    image?:string
 }
