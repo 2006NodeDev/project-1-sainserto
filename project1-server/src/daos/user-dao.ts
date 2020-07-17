@@ -45,8 +45,8 @@ export async function saveOneUser(newUser: User): Promise<User> {
         if (e.message === 'Role Not Found') {
             throw new UserInputError()
         }
-        if (e.message === 'Specialty Not Found') {
-            throw new UserInputError()
+        if (e.message === 'Specialty Not Found') {          
+            throw new UserInputError()          
         }
         console.log(e);
         throw new Error('Unhandled Error Occured')

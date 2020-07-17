@@ -7,11 +7,11 @@ import { getAllUsers, updateUser, saveOneUser, findUserById, findUserBySpecialty
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
 import { UserInputError } from '../errors/UserInputError'
 // import { UserNotFoundError } from '../errors/UserNotFoundError'
-import { authenticationMiddleware } from '../middleware/authentication-middleware'
+// import { authenticationMiddleware } from '../middleware/authentication-middleware'
 import { UserNotFoundError } from '../errors/UserNotFoundError'
 
-export let userRouter = express.Router()
-userRouter.use(authenticationMiddleware)
+export const userRouter = express.Router()
+// userRouter.use(authenticationMiddleware)
 
 // get ALL users -- admin, fm
 // userRouter.get('/', authorizationMiddleware(['admin', 'finance-manager']), async (req: Request, res: Response, next: NextFunction) => {
@@ -132,6 +132,8 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
     let { username, password, firstName, lastName, email, role, phoneNumber, specialty, description} = req.body
     if (!username || !password || !firstName || !lastName || !email || !phoneNumber || !role) {
         next(new UserInputError)
+        // console.log('YOU DIDNT FILL OUT ALL FIELDS');
+        
     } else {
         let newUser: User = {
             username,
@@ -143,7 +145,7 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
             phoneNumber,
             specialty,
             description,
-            userId: 0
+            userId:0
         }
         newUser.role = role || "student"
         newUser.specialty = specialty || "none"
@@ -153,7 +155,11 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
             // res.sendStatus(201).json(savedUser)
             res.json(savedUser)
         } catch (e) {
-            next(new UserInputError)
+            next(e)
+            // next(new UserInputError)
+            console.log("DIDNT SAVE");
+            
+
         }
     }
 })

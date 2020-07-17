@@ -8,7 +8,8 @@ import { getUserByUsernameAndPassword } from './daos/user-dao'
 import { BadCredentialsError } from './errors/BadCredentialsError'
 
 const app = express()
-app.use(express.json())
+// app.use(express.json())
+app.use(express.json({limit:'50mb'}))
 app.use(loggingMiddleware)
 app.use(corsFilter)
 app.use(sessionMiddleware)

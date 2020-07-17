@@ -1,5 +1,5 @@
-import { Role } from "./Role"
-import { Specialty } from "./Specialty"
+// import { Role } from "./Role"
+// import { Specialty } from "./Specialty"
 
 export class User{
     userId: number
@@ -8,8 +8,8 @@ export class User{
     firstName: string
     lastName: string
     email: string
-    role: Role
-    phoneNumber: number
-    specialty: Specialty
+    role: string
+    phoneNumber: string
+    specialty: string
     description: string
 }

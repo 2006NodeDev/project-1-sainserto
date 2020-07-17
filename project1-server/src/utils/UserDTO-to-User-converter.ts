@@ -14,15 +14,17 @@ export function UserDTOtoUserConverter(udto: UserDTO): User {
         firstName: udto.first_name,
         lastName: udto.last_name,
         email: udto.email,
-        role:{
-            roleId: udto.role_id,
-            role: udto.role
-        },
+        role: udto.role,
+        specialty: udto.specialty,
+        // role:{
+        //     roleId: udto.role_id,
+        //     role: udto.role
+        // },
         phoneNumber: udto.phoneNumber,
-        specialty:{
-            specialtyId: udto.specialty_id,
-            specialty: udto.specialty
-        },
+        // specialty:{
+        //     specialtyId: udto.specialty_id,
+        //     specialty: udto.specialty
+        // },
         description: udto.description
     }
 }
