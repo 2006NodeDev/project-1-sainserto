@@ -16,6 +16,10 @@ app.use(sessionMiddleware)
 
 app.use('/users', userRouter)
 
+app.get('health', (req:Request, res:Response) => {
+    res.sendStatus(200)
+})
+
 app.post('/login', async(req:Request, res:Response, next:NextFunction) => {
     let username = req.body.username
     let password = req.body.password
