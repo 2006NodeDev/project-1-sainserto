@@ -10,13 +10,15 @@ interface IUserDisplayProps{
 }
 
 
+
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
       '& > *': {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
         width: theme.spacing(20),
         height: theme.spacing(17),
       },
@@ -38,6 +40,15 @@ export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)
     return(
         <div className={classes.root}>
             <Paper className={classes.paper}elevation={4}>
+
+            <Typography variant='body1'>
+                   Name: {props.user.firstName} {props.user.lastName}
+                </Typography>
+
+                <Typography variant='body1'>
+                   {props.user.role} : {props.user.specialty}
+                </Typography>
+
             <Typography variant='body1'>
                    About me : {props.user.description}
                 </Typography>
@@ -50,22 +61,12 @@ export const UserDisplayComponent:FunctionComponent<IUserDisplayProps> = (props)
                 <Typography variant='body1'>
                    Phone : {props.user.phoneNumber}
                 </Typography>
-                <Typography variant='body1'>
-                   First Name : {props.user.firstName}
-                </Typography>
-                <Typography variant='body1'>
-                   Last Name : {props.user.lastName}
-                </Typography>
-                <Typography variant='body1'>
-                   Role : {props.user.role}
-                </Typography>
-                <Typography variant='body1'>
-                   Specialty : {props.user.specialty}
-                </Typography>
-               <form onSubmit={editProfile}>
+              
+        
+               {/* <form onSubmit={editProfile}>
                 <Button variant='contained' color='inherit'>Edit</Button>
 
-               </form>
+               </form> */}
             </Paper>
         </div>
     )

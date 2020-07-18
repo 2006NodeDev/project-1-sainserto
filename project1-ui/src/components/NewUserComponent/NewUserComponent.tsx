@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, SyntheticEvent } from 'react'
 // import TextField from '@material-ui/core/TextField'
 // import { RouteComponentProps } from 'react-router-dom'
-import { Button, TextField } from '@material-ui/core'
+import { Button, TextField, Grid } from '@material-ui/core'
 // import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -21,8 +21,47 @@ import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        // root: {
+        //     minWidth: 275,
+        // },
+
         root: {
-            minWidth: 275,
+            display: 'flex',
+            '& > *': {
+                margin: theme.spacing(0),
+            },
+            '& .MuiTextField-root': {
+                margin: theme.spacing(1),
+                // width: '25ch',
+            },
+        },
+        container: {
+            paddingTop: theme.spacing(10),
+            paddingBottom: theme.spacing(4),
+        },
+        grid: {
+            padding: theme.spacing(5),
+            margin: 'auto',
+            display: 'flex',
+            overflow: 'auto',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+
+        },
+        fixedHeight: {
+            height: 600,
+        },
+        form: {
+            width: '100%',
+            marginTop: theme.spacing(3),
+        },
+        mainButton: {
+            backgroundColor: "#A74482",
+            fontSize: 16,
+            margin: theme.spacing(3, 0, 2),
+            '&:hover': {
+                backgroundColor: "#422951"
+            }
         },
         bullet: {
             display: 'inline-block',
@@ -49,9 +88,12 @@ const useStyles = makeStyles((theme: Theme) =>
 //     changeCurrentUser: (newUser: any) => void
 // }
 
+
+
 export const NewUserComponent: FunctionComponent<any> = (props) => {
 
     const classes = useStyles();
+
     const bull = <span className={classes.bullet}>•</span>;
     const [state, setState] = React.useState<{ age: string | number; name: string }>({
         age: '',
@@ -132,8 +174,8 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
         changeDescription(e.currentTarget.value)
     }
 
-    const updateImage = (e:any) => {
-        let file:File = e.currentTarget.files[0]
+    const updateImage = (e: any) => {
+        let file: File = e.currentTarget.files[0]
         let reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = () => {
@@ -177,84 +219,108 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
     }
 
     return (
-        <div>
-            <React.Fragment>
 
-                <CssBaseline />
-                <Container maxWidth="sm">
-                    <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
-                        <form autoComplete="off" onSubmit={submitUser}>
+        <React.Fragment>
+            <div className={classes.root}>
+                
+                <Container maxWidth="xs" className={classes.container}>
+                    <form className={classes.form} autoComplete="off" onSubmit={submitUser}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={12}>
+                                <TextField required fullWidth variant="outlined" label="Username" value={username} onChange={updateUsername} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField required fullWidth variant="outlined" label="Password" type="password" value={password} onChange={updatePassword} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField required fullWidth variant="outlined" label="Confirm Password" type="password" value={confirmPassword} onChange={updateConfirmPassword} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField required fullWidth variant="outlined" label="First Name" value={firstName} onChange={updateFirstName} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField required fullWidth variant="outlined" label="Last Name" value={lastName} onChange={updateLastName} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
 
-                            <Card className={classes.root}>
-                                <CardContent>
+                                <TextField required fullWidth variant="outlined" type="email" label="Email" value={email} onChange={updateEmail} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
 
-                                    <TextField label="Username" value={username} onChange={updateUsername} />
-                                    <TextField label="Password" type="password" value={password} onChange={updatePassword} />
-                                    <TextField label="Confirm Password" type="password" value={confirmPassword} onChange={updateConfirmPassword} />
-                                    <TextField label="First Name" value={firstName} onChange={updateFirstName} />
-                                    <TextField label="Last Name" value={lastName} onChange={updateLastName} />
-                                    <TextField type="email" label="Email" value={email} onChange={updateEmail} />
-                                    <TextField label="Phone" type="tel" value={phoneNumber} onChange={updatePhoneNumber} />
-                                    {/* <TextField type="text" label="Role" value={role} onChange={updateRole} /> */}
+                                <TextField required fullWidth variant="outlined" label="Phone" type="tel" value={phoneNumber} onChange={updatePhoneNumber} />
+                            </Grid>
 
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel htmlFor="age-native-simple">Role</InputLabel>
-                                        <Select
-                                            native
-                                            value={role}
-                                            onChange={updateRole}
-                                            inputProps={{
-                                                name: 'age',
-                                                id: 'age-native-simple',
-                                            }}
-                                        >
-                                            <option aria-label="None" value="" />
-                                            <option value="tutor">Tutor</option>
-                                            <option value="student">Student</option>
-                                        </Select>
-                                    </FormControl>
+                            {/* <TextField type="text" label="Role" value={role} onChange={updateRole} /> */}
+                            <Grid item xs={12} sm={6}>
 
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel htmlFor="age-native-simple">Specialty</InputLabel>
-                                        <Select
-                                            native
-                                            value={specialty}
-                                            onChange={updateSpecialty}
-                                            inputProps={{
-                                                name: 'age',
-                                                id: 'age-native-simple',
-                                            }}
-                                        >
-                                            <option aria-label="None" value="" />
-                                            <option value="None">None</option>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel htmlFor="age-native-simple">Role</InputLabel>
+                                    <Select
+                                    
+                                        native
+                                        value={role}
+                                        onChange={updateRole}
+                                        inputProps={{
+                                            name: 'age',
+                                            id: 'age-native-simple',
+                                        }}
+                                    >
+                                        <option aria-label="None" value="" />
+                                        <option value="tutor">Tutor</option>
+                                        <option value="student">Student</option>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
 
-                                            <option value="JavaScript">JavaScript</option>
-                                            <option value="Java">Java</option>
-                                            <option value="SQL">SQL</option>
-                                            <option value="React">React</option>
-                                            <option value="Google Cloud Platform">GCP</option>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel htmlFor="age-native-simple">Specialty</InputLabel>
+                                    <Select
+                                  
+                                        native
+                                        value={specialty}
+                                        onChange={updateSpecialty}
+                                        inputProps={{
+                                            name: 'age',
+                                            id: 'age-native-simple',
+                                        }}
+                                    >
+                                        <option aria-label="None" value="" />
+                                        <option value="None">None</option>
 
-                                        </Select>
-                                    </FormControl>
+                                        <option value="JavaScript">JavaScript</option>
+                                        <option value="Java">Java</option>
+                                        <option value="SQL">SQL</option>
+                                        <option value="React">React</option>
+                                        <option value="Google Cloud Platform">GCP</option>
 
-                                    {/* <TextField label="Specialty" value={specialty} onChange={updateSpecialty} /> */}
-                                    <TextField label="Description" value={description} onChange={updateDescription} />
-                                    <label htmlFor='file'>Profile Pic</label>
-                                    <input type='file' name='file' accept='image/*' onChange={updateImage} />
-                                    <img src={image} />
-                                    <Button type='submit' variant="contained" color="primary">Sign Up</Button>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+  
+                            <Grid item xs={12} sm={12}>
 
-
-
+                                <TextField fullWidth variant="outlined" label="Description" value={description} onChange={updateDescription} />
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                        <Card className={classes.root}>
+                                            <CardContent>
+                                            <Typography>
+                                <label htmlFor='file'>Upload a profile picture</label>
+                                </Typography>
+                                <input type='file' name='file' accept='image/*' onChange={updateImage} />
+                                <img src={image} />
                                 </CardContent>
-                            </Card>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <Button fullWidth className={classes.mainButton} type='submit' variant="contained" color="primary">Sign Up</Button>
+                            </Grid>
 
-                        </form>
-                    </Typography>
+                        </Grid>
+                    </form>
                 </Container>
-            </React.Fragment>
-
-        </div>
-
+            </div>
+        </React.Fragment >
     )
 }

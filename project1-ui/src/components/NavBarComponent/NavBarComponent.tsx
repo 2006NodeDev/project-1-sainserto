@@ -66,6 +66,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
+    main:{
+      backgroundColor: "#422951"
+    }
   }),
 );
 
@@ -108,7 +111,7 @@ export const NavBarComponent:FunctionComponent<any> = (props) => {
     return (
         <div className={classes.root}>
           <AppBar position="static">
-            <Toolbar>
+            <Toolbar className={classes.main}>
               <IconButton
                 onClick={handleClick}
                 edge="start"

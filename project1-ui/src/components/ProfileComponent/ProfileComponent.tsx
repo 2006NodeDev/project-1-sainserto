@@ -13,11 +13,13 @@ export const ProfileComponent: FunctionComponent<any> = (props) => {
     let getUser = async () => {
         let userInfo = await tutorialhubGetUserById(userId)
         changeUserProfile(userInfo)
+     
+        
 
     }
     if(!userProfile || userProfile.userId !== +userId){
         getUser()
-        
+        console.log("userId: " + userId);
     }
 })
 

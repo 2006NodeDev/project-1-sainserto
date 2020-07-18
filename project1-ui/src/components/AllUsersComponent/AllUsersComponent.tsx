@@ -2,9 +2,11 @@ import React, { FunctionComponent, useState, useEffect } from "react"
 import { User } from "../../models/User"
 import { UserDisplayComponent } from "../UserDisplayComponent/UserDisplayComponent"
 import { tutorialhubGetAllUsers } from "../../remote/tutorialhub-api/tutorialhub-get-all-users"
+import { useParams } from "react-router"
 
 export const AllUsersComponent:FunctionComponent<any> = (props) => {
     let [allUsers, changeAllUsers] = useState<User[]>([])
+
 
     useEffect(() =>{
 
@@ -19,7 +21,7 @@ export const AllUsersComponent:FunctionComponent<any> = (props) => {
     })
 
     let userDisplays = allUsers.map((user) =>{
-        return <UserDisplayComponent key={'user-key-' + user.userId} user={user}/>
+        return <UserDisplayComponent key={`user-key-` + user.username} user={user}/>
     })
 
     return(
