@@ -34,7 +34,7 @@ export async function saveOneUser(newUser: User): Promise<User> {
         "password", "first_name", "last_name", "email", "role", "specialty", "phone", "description", "image") 
         values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) returning "user_id"`,
             [newUser.username, newUser.password, newUser.firstName, newUser.lastName,
-            newUser.email, roleId, specialtyId, newUser.phoneNumber, newUser.description, newUser.image])
+            newUser.email, roleId, specialtyId, newUser.phone, newUser.description, newUser.image])
 
 
         newUser.userId = results.rows[0].user_id
@@ -256,9 +256,9 @@ export async function updateUser(user: User): Promise<User> {
             set "email" = $1 where user_id = $2;`, [user.email, userId])
             console.log(updateResults.rows[0])
         }
-        if (user.phoneNumber != undefined) {
+        if (user.phone != undefined) {
             let updateResults = await client.query(`update tutorialhub.users 
-            set "phone" = $1 where user_id = $2;`, [user.phoneNumber, userId])
+            set "phone" = $1 where user_id = $2;`, [user.phone, userId])
             console.log(updateResults.rows[0])
         }
 

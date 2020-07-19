@@ -20,7 +20,7 @@ export function UserDTOtoUserConverter(udto: UserDTO): User {
         //     roleId: udto.role_id,
         //     role: udto.role
         // },
-        phoneNumber: udto.phoneNumber,
+        phone: udto.phone,
         // specialty:{
         //     specialtyId: udto.specialty_id,
         //     specialty: udto.specialty

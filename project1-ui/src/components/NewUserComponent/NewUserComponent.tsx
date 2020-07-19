@@ -114,7 +114,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
     let [firstName, changeFirstName] = useState('')
     let [lastName, changeLastName] = useState('')
     let [email, changeEmail] = useState('')
-    let [phoneNumber, changePhoneNumber] = useState('')
+    let [phone, changePhone] = useState('')
     let [role, changeRole] = useState('')
     let [specialty, changeSpecialty] = useState('')
     let [description, changeDescription] = useState('')
@@ -154,9 +154,9 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
         changeEmail(e.currentTarget.value)
     }
 
-    const updatePhoneNumber = (e: any) => {
+    const updatePhone = (e: any) => {
         e.preventDefault()
-        changePhoneNumber(e.currentTarget.value)
+        changePhone(e.currentTarget.value)
     }
 
     const updateRole = (e: any) => {
@@ -199,7 +199,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                 firstName,
                 lastName,
                 email,
-                phoneNumber,
+                phone,
                 description,
                 role,
                 specialty,
@@ -251,7 +251,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
 
-                                <TextField required fullWidth variant="outlined" label="Phone" type="tel" value={phoneNumber} onChange={updatePhoneNumber} />
+                                <TextField required fullWidth variant="outlined" label="Phone" type="tel" value={phone} onChange={updatePhone} />
                             </Grid>
 
                             {/* <TextField type="text" label="Role" value={role} onChange={updateRole} /> */}

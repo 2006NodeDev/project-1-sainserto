@@ -8,7 +8,7 @@ export interface User{
     firstName: string
     lastName: string
     email: string
-    phoneNumber: string
+    phone: string
     role:string
     specialty:string
     // role: Role
@@ -17,7 +17,7 @@ export interface User{
     image?: string
 
     // constructor(userId: number, username: string, password: string, firstName: string, lastName: string,
-    //             email: string, role: Role, phoneNumber: string, specialty: Specialty, description: string){
+    //             email: string, role: Role, phone: string, specialty: Specialty, description: string){
     //     this.userId = userId,
     //     this.username = username,
     //     this.password = password,
@@ -25,7 +25,7 @@ export interface User{
     //     this.lastName = lastName,
     //     this.email = email,
     //     this.role = role,
-    //     this.phoneNumber = phoneNumber,
+    //     this.phone = phone,
     //     this.specialty = specialty,
     //     this.description = description
     // }

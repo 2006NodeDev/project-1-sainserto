@@ -130,8 +130,8 @@ userRouter.get('/role/:role', async (req: Request, res: Response, next: NextFunc
 userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 
-    let { username, password, firstName, lastName, email, role, phoneNumber, specialty, description, image} = req.body
-    if (!username || !password || !firstName || !lastName || !email || !phoneNumber || !role) {
+    let { username, password, firstName, lastName, email, role, phone, specialty, description, image} = req.body
+    if (!username || !password || !firstName || !lastName || !email || !phone || !role) {
         next(new UserInputError)
         // console.log('YOU DIDNT FILL OUT ALL FIELDS');
         
@@ -143,7 +143,7 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
             lastName,
             email,
             role,
-            phoneNumber,
+            phone,
             specialty,
             description,
             userId:0,
@@ -180,7 +180,7 @@ userRouter.patch('/', async (req: Request, res: Response, next: NextFunction) =>
         lastName: req.body.lastName,
         email: req.body.email,
         role: req.body.role,
-        phoneNumber: req.body.phoneNumber,
+        phone: req.body.phone,
         specialty: req.body.specialty,
         description: req.body.description,
         image:req.body.image

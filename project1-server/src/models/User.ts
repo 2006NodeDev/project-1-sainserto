@@ -9,7 +9,7 @@ export class User{
     lastName: string
     email: string
     role: string
-    phoneNumber: string
+    phone: string
     specialty: string
     description: string
     image?:string

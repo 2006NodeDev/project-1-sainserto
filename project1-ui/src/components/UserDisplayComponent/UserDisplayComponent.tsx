@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
-import { Avatar } from '@material-ui/core';
+import { Avatar, Chip } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -81,29 +81,32 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
       <Grid container spacing={10}>
         <Grid item xs={12} sm={12}>
           <Card className={classes.root}>
+            <Grid item xs={6}>
             <CardHeader
               avatar={
                 <Avatar alt={props.user.username} src={props.user.image} className={classes.large} />
               }
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
+              // action={
+              //   <IconButton aria-label="settings">
+              //     <MoreVertIcon />
+              //   </IconButton>
+              // }
 
             />
-            <CardMedia
+            </Grid>
+            {/* <CardMedia
               className={classes.media}
               image="/static/images/cards/paella.jpg"
               title="Paella dish"
-            />
+            /> */}
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 {props.user.firstName} {props.user.lastName}
               </Typography>
-              <Typography variant="h5" gutterBottom>
-                I can help you with : {props.user.specialty}
+              <Typography variant="overline" display="block" gutterBottom>
+                I can help you with: <Chip size="small" color="primary" label={props.user.specialty}/>
               </Typography>
+              
 
               <Typography variant="body2" color="textSecondary" component="p">
                 {props.user.description}
@@ -131,10 +134,10 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography variant="subtitle2" gutterBottom>
-                  email: {props.user.email}
+                  {props.user.email}
                 </Typography>
                 <Typography variant="subtitle2" gutterBottom>
-                  phone: {props.user.phoneNumber}
+                  {props.user.phone}
                 </Typography>
               </CardContent>
             </Collapse>

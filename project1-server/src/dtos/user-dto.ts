@@ -7,7 +7,7 @@ export class UserDTO{
     email:string
     role:string
     role_id:number
-    phoneNumber:string
+    phone:string
     specialty: string
     specialty_id: number
     description: string

@@ -66,7 +66,7 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
     let [firstName, changeFirstName] = useState('')
     let [lastName, changeLastName] = useState('')
     let [email, changeEmail] = useState('')
-    let [phoneNumber, changePhoneNumber] = useState('')
+    let [phone, changePhone] = useState('')
     let [role, changeRole] = useState('')
     let [specialty, changeSpecialty] = useState('')
     let [description, changeDescription] = useState('')
@@ -120,12 +120,12 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
         }
     }
 
-    const updatePhoneNumber = (e: any) => {
+    const updatePhone = (e: any) => {
         e.preventDefault()
         if (e.currentTarget.value !== undefined) {
-            changePhoneNumber(e.currentTarget.value)
+            changePhone(e.currentTarget.value)
         } else {
-            changePhoneNumber(e.currentTarget.phoneNumber)
+            changePhone(e.currentTarget.phone)
         }
     }
 
@@ -178,7 +178,7 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
             firstName,
             lastName,
             email,
-            phoneNumber,
+            phone,
             description,
             role,
             specialty,
@@ -208,7 +208,7 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
                             <TextField defaultValue={firstName} value={firstName} onChange={updateFirstName} />
                             <TextField label="Last Name" value={lastName} onChange={updateLastName} />
                             <TextField type="email" label="Email" value={email} onChange={updateEmail} />
-                            <TextField label="Phone" type="tel" value={phoneNumber} onChange={updatePhoneNumber} />
+                            <TextField label="Phone" type="tel" value={phone} onChange={updatePhone} />
                             {/* <TextField type="text" label="Role" value={role} onChange={updateRole} /> */}
 
                             <FormControl className={classes.formControl}>
