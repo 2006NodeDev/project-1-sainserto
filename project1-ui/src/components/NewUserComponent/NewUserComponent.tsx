@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         container: {
-            paddingTop: theme.spacing(10),
+            paddingTop: theme.spacing(1),
             paddingBottom: theme.spacing(4),
         },
         grid: {
@@ -221,11 +221,15 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
     return (
 
         <React.Fragment>
+            <Container component="main" maxWidth="xs">
+            <CssBaseline />
             <div className={classes.root}>
-                
-                <Container maxWidth="xs" className={classes.container}>
+                {/* <Container maxWidth="xs" className={classes.container}> */}
                     <form className={classes.form} autoComplete="off" onSubmit={submitUser}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={2}
+                            direction="row"
+                            justify="center"
+                            alignItems="center">
                             <Grid item xs={12} sm={12}>
                                 <TextField required fullWidth variant="outlined" label="Username" value={username} onChange={updateUsername} />
                             </Grid>
@@ -256,7 +260,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="age-native-simple">Role</InputLabel>
                                     <Select
-                                    
+
                                         native
                                         value={role}
                                         onChange={updateRole}
@@ -276,7 +280,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="age-native-simple">Specialty</InputLabel>
                                     <Select
-                                  
+
                                         native
                                         value={specialty}
                                         onChange={updateSpecialty}
@@ -297,20 +301,20 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-  
+
                             <Grid item xs={12} sm={12}>
 
                                 <TextField fullWidth variant="outlined" label="Description" value={description} onChange={updateDescription} />
                             </Grid>
                             <Grid item xs={12} sm={12}>
-                                        <Card className={classes.root}>
-                                            <CardContent>
-                                            <Typography>
-                                <label htmlFor='file'>Upload a profile picture</label>
-                                </Typography>
-                                <input type='file' name='file' accept='image/*' onChange={updateImage} />
-                                <img src={image} />
-                                </CardContent>
+                                <Card className={classes.root}>
+                                    <CardContent>
+                                        <Typography>
+                                            <label htmlFor='file'>Upload a profile picture</label>
+                                        </Typography>
+                                        <input type='file' name='file' accept='image/*' onChange={updateImage} />
+                                        <img src={image} />
+                                    </CardContent>
                                 </Card>
                             </Grid>
                             <Grid item xs={12} sm={12}>
@@ -319,8 +323,9 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
 
                         </Grid>
                     </form>
-                </Container>
+                {/* </Container> */}
             </div>
+            </Container>
         </React.Fragment >
     )
 }
