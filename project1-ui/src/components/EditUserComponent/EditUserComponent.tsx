@@ -1,7 +1,9 @@
 import { FunctionComponent, useState, SyntheticEvent } from "react"
-import { Button, TextField, IconButton } from '@material-ui/core'
+import { TextField, IconButton } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+
 import { Grid, makeStyles, Container } from '@material-ui/core'
-import { useParams } from 'react-router'
+import { useParams, RouteComponentProps } from 'react-router'
 import { User } from '../../models/User'
 import React from 'react'
 import { toast } from "react-toastify"
@@ -11,6 +13,9 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select';
 import PhotoCamera from '@material-ui/icons/PhotoCameraRounded'
 
+interface ILogInProps extends RouteComponentProps{
+    user:User
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,13 +58,23 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    mainButton: {
+        backgroundColor: "#A74482",
+        fontSize: 16,
+        color:"white",
+        margin: theme.spacing(3, 0, 2),
+        '&:hover': {
+            backgroundColor: "#422951"
+        }
+    }
 }));
 
-export const EditUserComponent: FunctionComponent<any> = (props) => {
 
+export const EditUserComponent: FunctionComponent<any> = (props) => {
+    // let currentUserId = props.user.userId
     const classes = useStyles();
 
-    const { userId } = useParams()
+    const {userId} = useParams()
     let [username, changeUsername] = useState('')
     let [password, changePassword] = useState('')
     let [confirmPassword, changeConfirmPassword] = useState('')
@@ -73,14 +88,15 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
     let [image, changeImage] = useState(undefined)
 
 
-    const [currentUser, changeCurrentUser] = useState(null)
+    // const [currentUser, changeCurrentUser] = useState(null)
+    
 
     const updateUsername = (e: any) => {
         e.preventDefault()
         if (e.currentTarget.value !== undefined) {
             changeUsername(e.currentTarget.value)
         } else {
-            changeUsername(e.currentTarget.username)
+            changeUsername(e.currentTarget.username) 
         }
     }
 
@@ -104,56 +120,56 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
 
     const updateLastName = (e: any) => {
         e.preventDefault()
-        if (e.currentTarget.value !== undefined) {
+        // if (e.currentTarget.value !== undefined) {
             changeLastName(e.currentTarget.value)
-        } else {
-            changeLastName(e.currentTarget.lastName)
-        }
+        // } else {
+        //     changeLastName(e.currentTarget.lastName)
+        // }
     }
 
     const updateEmail = (e: any) => {
         e.preventDefault()
-        if (e.currentTarget.value !== undefined) {
+        // if (e.currentTarget.value !== undefined) {
             changeEmail(e.currentTarget.value)
-        } else {
-            changeEmail(e.currentTarget.email)
-        }
+        // } else {
+        //     changeEmail(e.currentTarget.email)
+        // }
     }
 
     const updatePhone = (e: any) => {
         e.preventDefault()
-        if (e.currentTarget.value !== undefined) {
+        // if (e.currentTarget.value !== undefined) {
             changePhone(e.currentTarget.value)
-        } else {
-            changePhone(e.currentTarget.phone)
-        }
+        // } else {
+        //     changePhone(e.currentTarget.phone)
+        // }
     }
 
     const updateRole = (e: any) => {
         e.preventDefault()
-        if (e.currentTarget.value !== undefined) {
+        // if (e.currentTarget.value !== undefined) {
             changeRole(e.currentTarget.value)
-        } else {
-            changeRole(e.currentTarget.role)
-        }
+        // } else {
+        //     changeRole(e.currentTarget.role)
+        // }
     }
 
     const updateSpecialty = (e: any) => {
         e.preventDefault()
-        if (e.currentTarget.value !== undefined) {
+        // if (e.currentTarget.value !== undefined) {
             changeSpecialty(e.currentTarget.value)
-        } else {
-            changeSpecialty(e.currentTarget.specialty)
-        }
+        // } else {
+        //     changeSpecialty(e.currentTarget.specialty)
+        // }
     }
 
     const updateDescription = (e: any) => {
         e.preventDefault()
-        if (e.currentTarget.value !== undefined) {
+        // if (e.currentTarget.value !== undefined) {
             changeDescription(e.currentTarget.value)
-        } else {
-            changeDescription(e.currentTarget.description)
-        }
+        // } else {
+        //     changeDescription(e.currentTarget.description)
+        // }
     }
 
     const updateImage = (e: any) => {
@@ -186,15 +202,13 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
         }
 
         try {
-            let res = await tutorialhubEditUser(editUser)
+            await tutorialhubEditUser(editUser)
             console.log(editUser);
             props.history.push(`/profile/${userId}`)
 
         } catch (error) {
             console.log(error);
         }
-
-
     }
 
     return (
@@ -205,12 +219,10 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
                         <Grid item xs={12} sm={6} md={12} lg={6} className={classes.grid}>
                             <TextField label="Username" value={username} onChange={updateUsername} />
                             <TextField label="Password" type="password" value={password} onChange={updatePassword} />
-                            <TextField defaultValue={firstName} value={firstName} onChange={updateFirstName} />
+                            <TextField label="First Name" value={firstName} onChange={updateFirstName} />
                             <TextField label="Last Name" value={lastName} onChange={updateLastName} />
-                            <TextField type="email" label="Email" value={email} onChange={updateEmail} />
+                            <TextField type="Email" label="Email" value={email} onChange={updateEmail} />
                             <TextField label="Phone" type="tel" value={phone} onChange={updatePhone} />
-                            {/* <TextField type="text" label="Role" value={role} onChange={updateRole} /> */}
-
                             <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="age-native-simple">Role</InputLabel>
                                 <Select
@@ -218,8 +230,8 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
                                     value={role}
                                     onChange={updateRole}
                                     inputProps={{
-                                        name: 'age',
-                                        id: 'age-native-simple',
+                                    
+                                        id: 'age-native-simple'
                                     }}
                                 >
                                     <option aria-label="None" value="" />
@@ -235,8 +247,8 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
                                     value={specialty}
                                     onChange={updateSpecialty}
                                     inputProps={{
-                                        name: 'age',
-                                        id: 'age-native-simple',
+                                       
+                                        id: 'age-native-simple'
                                     }}
                                 >
                                     <option aria-label="None" value="" />
@@ -250,22 +262,12 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
 
                                 </Select>
                             </FormControl>
-
-                            {/* <TextField label="Specialty" value={specialty} onChange={updateSpecialty} /> */}
                             <TextField label="Description" value={description} onChange={updateDescription} />
-
                             <input accept="image/*" id="icon-button-file" type="file" onChange={updateImage} />
                             <label htmlFor='icon-button-file'>
-                                <IconButton
-                                    color="default"
-                                    aria-label="upload picture"
-                                    component="span"
-                                >
-                                    <PhotoCamera />
-                                </IconButton>
                             </label>
-                            <img src={image || ''} width={5} height={15} />
-                            <Button type='submit' variant="contained" color="primary">Update</Button>
+                            <img src={image || ''}/>
+                            <Button type='submit' variant="contained" className={classes.mainButton}>Update</Button>
                         </Grid>
                     </Grid>
                 </form>

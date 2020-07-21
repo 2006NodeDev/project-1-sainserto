@@ -6,7 +6,7 @@ export const tutorialhubGetUserById = async (userId:number) =>{
         return response.data
     }catch(e){
         console.log(e);
-        console.log("handle this later");
+        throw new Error("Unimplemented Error Handling")
     }
 
 }

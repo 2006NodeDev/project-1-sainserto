@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useState, SyntheticEvent } from 'react'
 // import TextField from '@material-ui/core/TextField'
 // import { RouteComponentProps } from 'react-router-dom'
-import { Button, TextField, Grid } from '@material-ui/core'
-// import Button from '@material-ui/core/Button'
+import { TextField, Grid } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -220,7 +220,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
 
     return (
 
-        <React.Fragment>
+        <div>
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.root}>
@@ -326,6 +326,6 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                 {/* </Container> */}
             </div>
             </Container>
-        </React.Fragment >
+        </div >
     )
 }

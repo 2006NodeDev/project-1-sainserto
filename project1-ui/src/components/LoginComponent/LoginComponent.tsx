@@ -7,23 +7,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Container } from '@material-ui/core'
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import FilledInput from '@material-ui/core/FilledInput';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-// import { SpecialtyListComponent } from '../SpecialtyListComponent/SpecialtyListComponent'
-// import classes from '*.module.css'
 
 
 interface ILoginProps extends RouteComponentProps {
     changeCurrentUser: (newUser: any) => void
 }
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,15 +86,15 @@ export const LoginComponent: FunctionComponent<ILoginProps> = (props) => {
     });
     const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [prop]: event.target.value });
-      };
-    
-      const handleClickShowPassword = () => {
+    };
+
+    const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
-      };
-    
-      const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    };
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-      };
+    };
 
     const [username, changeUsername] = useState('')
     const [password, changePassword] = useState('')
@@ -118,9 +112,25 @@ export const LoginComponent: FunctionComponent<ILoginProps> = (props) => {
     const loginSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
         let res = await tutorialhubLogin(username, password)
-        props.changeCurrentUser(res)
-        changePassword('')
-        props.history.push('/home')
+
+        if (res.userId) {
+            props.history.push("/login")
+            console.log("login page dapat");
+          
+            
+            
+        } else {
+            props.changeCurrentUser(res)
+            changePassword('')
+            props.history.push("/home")
+            console.log("home dapat");
+            console.log(res.userId);
+        
+            
+
+            
+            // props.history.push('/')
+        }
     }
 
     return (
@@ -134,7 +144,6 @@ export const LoginComponent: FunctionComponent<ILoginProps> = (props) => {
                             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
-                            
                                     id="outlined-adornment-password"
                                     type={values.showPassword ? 'text' : 'password'}
                                     value={password}

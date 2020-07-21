@@ -20,6 +20,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid, { GridSpacing } from '@material-ui/core/Grid';
+import { EditUserComponent } from '../EditUserComponent/EditUserComponent';
+import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
 interface IUserDisplayProps {
   user: User
@@ -57,6 +59,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       backgroundColor: '#cccccc'
+    },
+    mainButton: {
+      backgroundColor: "#A74482",
+      fontSize: 16,
+      color: "white",
+      margin: theme.spacing(3, 0, 2),
+      '&:hover': {
+        backgroundColor: "#422951"
+      }
     }
   }),
 );
@@ -65,7 +76,10 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
+
+
   const handleExpandClick = () => {
+
     setExpanded(!expanded);
   };
 
@@ -82,21 +96,34 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
         <Grid item xs={12} sm={12}>
           <Card className={classes.root}>
             <Grid item xs={6}>
-            <CardHeader
-              avatar={
-                <Avatar alt={props.user.username} src={props.user.image} className={classes.large} />
-              }
+              <CardHeader
+                avatar={
+                  <Avatar alt={props.user.username} src={props.user.image} className={classes.large} />
+                }
               // action={
               //   <IconButton aria-label="settings">
               //     <MoreVertIcon />
               //   </IconButton>
               // }
 
-            />
+              />
             </Grid>
+
+
+
+            {props.user.image ? (
+               <CardMedia
+               className={classes.media}
+               image={props.user.image}
+               title="Paella dish"
+             />
+            ) : (
+               <h3>IDKWHATTHISISSUPPOSEDTOBE</h3>
+              )}
+
             {/* <CardMedia
               className={classes.media}
-              image="/static/images/cards/paella.jpg"
+              image={props.user.image}
               title="Paella dish"
             /> */}
             <CardContent>
@@ -104,9 +131,9 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
                 {props.user.firstName} {props.user.lastName}
               </Typography>
               <Typography variant="overline" display="block" gutterBottom>
-                I can help you with: <Chip size="small" color="primary" label={props.user.specialty}/>
+                I can help you with: <Chip size="small" color="primary" label={props.user.specialty} />
               </Typography>
-              
+
 
               <Typography variant="body2" color="textSecondary" component="p">
                 {props.user.description}
@@ -131,6 +158,10 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
+
+
+
+            
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography variant="subtitle2" gutterBottom>
@@ -142,6 +173,8 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
               </CardContent>
             </Collapse>
           </Card>
+          <Button variant='contained' className={classes.mainButton} color='inherit' component={RouterLink} to={`../edit/${(props.user) ? props.user.userId : '0'}`}>Edit</Button>
+          {/* <Link to={`edit/${(props.user) ? props.user.userId : '0'}`}>hi</Link> */}
         </Grid>
       </Grid>
     </div>

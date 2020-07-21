@@ -1,6 +1,6 @@
 import React from 'react'
 import { FunctionComponent, useState } from "react"
-import { Typography, Container, CssBaseline, Button, Grid } from '@material-ui/core'
+import { Typography, Container, CssBaseline, Button, Grid, LinkProps } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Link } from 'react-router-dom';
@@ -43,33 +43,47 @@ export const SpecialtyListComponent: FunctionComponent<any> = (props) => {
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <form onSubmit={specialtySubmit}>
-               
+
                     <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
                     <div>{`inputValue: '${inputValue}'`}</div>
                     <br />
-                    <Grid container spacing={10}
-                            direction="row"
-                            justify="center"
-                            alignItems="center">
-                    <Grid item xs={12} sm={6}>
-                    <Autocomplete
-                        value={value}
-                        onKeyPress={handleKeyPress}
-                        onChange={(event: any, newValue: string | null) => {
-                            setValue(newValue);
-                        }}
-                        inputValue={inputValue}
-                        onInputChange={(event, newInputValue) => {
-                            setInputValue(newInputValue);
-                        }}
-                        id="controllable-states-demo"
-                        options={options}
-                        style={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Controllable" variant="outlined" />}
-                    /></Grid>
-                    <Grid item xs={12} sm={6}>
-                    <Link to={`/specialty/${value}`}><Button className={classes.mainButton} variant="contained" color="primary">GO</Button></Link>
-                    </Grid>
+                    <Grid container spacing={3}
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
+                        <Grid item xs={12} sm={12}>
+                            <Autocomplete
+                                value={value}
+                                onKeyPress={handleKeyPress}
+                                onChange={(event: any, newValue: string | null) => {
+                                    setValue(newValue);
+                                }}
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputValue(newInputValue);
+                                }}
+                                id="controllable-states-demo"
+                                options={options}
+                                style={{ width: 300 }}
+                                renderInput={(params) => <TextField {...params} label="Controllable" variant="outlined" />}
+                            /></Grid>
+                        <Grid item xs={12} sm={12}>
+
+                            <Button
+                            className={classes.mainButton}
+                                component={React.forwardRef<HTMLAnchorElement, Partial<LinkProps>>(
+                                    (props, ref) => (
+                                        <Link to={`/specialty/${value}`} {...props} ref={ref as any} />
+                                    )
+                                )}
+                            >
+                                GO
+                            </Button>
+
+                            
+                            
+                            {/* <Link to={`/specialty/${value}`}><Button className={classes.mainButton} variant="contained" color="primary">GO</Button></Link> */}
+                        </Grid>
                     </Grid>
                 </form>
             </Container>

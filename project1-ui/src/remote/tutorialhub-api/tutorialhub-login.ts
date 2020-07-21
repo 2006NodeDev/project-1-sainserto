@@ -11,5 +11,6 @@ export const tutorialhubLogin = async(username:string, password:string) => {
         return response.data
     } catch(e){
         console.log(e);    
+        return("Failed to Log In")
     }
 }

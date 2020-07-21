@@ -33,9 +33,9 @@ function App() {
         {/* <UserDisplayComponent user={currentUser}/> */}
         <Route path='/home' component={HomeComponent}/>
         <Route path='/login' render={(props)=>(<LoginComponent changeCurrentUser={changeCurrentUser} {...props}/>)} />
-        <Route path='/signup' component={NewUserComponent}/>
-        <Route path='/profile/edit/:userId' component={EditUserComponent}/>
-
+        <Route path='/signup' render={(props)=>(<NewUserComponent changeCurrentUser={changeCurrentUser} {...props}/>)}/>
+        <Route path='/edit/:userId' component={EditUserComponent}/>
+        {/* <Route path='/edit/:userId' render={(props)=>(<EditUserComponent user={currentUser} {...props}/>)}/> */}
         <Route path='/users' component={AllUsersComponent}/>
         <Route path='/profile/:userId' component={ProfileComponent}/>
         <Route path='/specialty/:specialty' component={DisplayBySpecialtyComponent}/>
