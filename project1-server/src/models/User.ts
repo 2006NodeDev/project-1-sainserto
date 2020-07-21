@@ -1,6 +1,3 @@
-// import { Role } from "./Role"
-// import { Specialty } from "./Specialty"
-
 export class User{
     userId: number
     username: string

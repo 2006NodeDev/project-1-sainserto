@@ -9,8 +9,6 @@ import { userTopic } from './messaging/index'
 import './event-listeners/new-user'
 console.log(userTopic);
 
-
-
 const app = express()
 // app.use(express.json())
 app.use(express.json({ limit: '50mb' }))
@@ -51,7 +49,7 @@ app.use((err, req, res, next) => {
 
 
 app.use('/', (req, res) => {
-    res.send('Hello World')
+    res.send('go to findmytutor.saivyl.com')
 })
 
 app.listen(2006, () => {

@@ -1,4 +1,4 @@
-import { getAllUsers, findUserById, saveOneUser, findUserBySpecialty, findUserByRole, getUserByUsernameAndPassword } from "../daos/SQL/user-dao";
+import { getAllUsers, findUserById, saveOneUser, findUserBySpecialty, findUserByRole, getUserByUsernameAndPassword, updateUser } from "../daos/SQL/user-dao";
 import { User } from "../models/User";
 import { saveProfilePicture } from "../daos/Cloud Storage/user-images";
 import { bucketBaseUrl } from "../daos/Cloud Storage";
@@ -45,22 +45,7 @@ export async function saveOneUserService(newUser: User): Promise<User> {
     }
 }
 
-// export async function updateUserService(user: User): Promise<User> {
-//     try {
-//         let base64Image = user.image
-//         let [dataType, imageBase64Data] = base64Image.split(';base64,')
-//         let contentType = dataType.split('/').pop()
-
-//         if (user.image) {
-//             user.image = `${bucketBaseUrl}/users/${user.username}/profile.${contentType}`
-//         }
-
-//         let savedUser = await updateUser(user)
-//         await saveProfilePicture(contentType, imageBase64Data, `users/${user.username}/profile.${contentType}`)
-//         return savedUser
-
-//     } catch (e) {
-//         console.log(e);
-//         throw e
-//     }
-// }
+export async function updateUserService(user: User): Promise<User> {
+    expressEventEmitter.emit(customExpressEvents.NEW_USER, user) 
+    return await updateUser(user)
+}

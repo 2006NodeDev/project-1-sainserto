@@ -1,13 +1,11 @@
-//get all users - admin, fm
+//get all users - admin
 import { PoolClient, QueryResult } from "pg";
 import { connectionPool } from ".";
 import { UserNotFoundError } from "../../errors/UserNotFoundError";
 import { UserDTOtoUserConverter } from "../../utils/UserDTO-to-User-converter";
 import { User } from "../../models/User";
-// import { UserInputError } from "../errors/UserInputError";
 import { BadCredentialsError } from "../../errors/BadCredentialsError";
 import { UserInputError } from "../../errors/UserInputError";
-// import { Specialty } from "../models/Specialty";
 
 //create user
 
@@ -30,9 +28,18 @@ export async function saveOneUser(newUser: User): Promise<User> {
         }
         specialtyId = specialtyId.rows[0].specialty_id
 
-        let results = await client.query(`insert into tutorialhub.users ("username",
-        "password", "first_name", "last_name", "email", "role", "specialty", "phone", "description", "image") 
-        values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) returning "user_id"`,
+        let results = await client.query(`insert into tutorialhub.users (
+            "username",
+            "password", 
+            "first_name", 
+            "last_name", 
+            "email", 
+            "role", 
+            "specialty", 
+            "phone", 
+            "description", 
+            "image") 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) returning "user_id"`,
             [newUser.username, newUser.password, newUser.firstName, newUser.lastName,
             newUser.email, roleId, specialtyId, newUser.phone, newUser.description, newUser.image])
 
@@ -45,8 +52,8 @@ export async function saveOneUser(newUser: User): Promise<User> {
         if (e.message === 'Role Not Found') {
             throw new UserInputError()
         }
-        if (e.message === 'Specialty Not Found') {          
-            throw new UserInputError()          
+        if (e.message === 'Specialty Not Found') {
+            throw new UserInputError()
         }
         console.log(e);
         throw new Error('Unhandled Error Occured')
@@ -75,24 +82,10 @@ export async function getAllUsers() {
         u."phone", 
         u."description",
         u."image"
-        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r."role_id"
-	    left join tutorialhub.specialty s on u."specialty" = s."specialty_id";`)
-
-        // (`select u."user_id", 
-        // u."username", 
-        // u."password", 
-        // u."first_name", 
-        // u."last_name", 
-        // u."email", 
-        // u."phone", 
-        // u."description", 
-        // r."role",
-        // array_agg(distinct (c.course)) as courses
-        // from tutorialhub.users u 
-        // natural join tutorialhub.users_course uc
-        // natural join tutorialhub.course c
-        // left join tutorialhub.roles r on u."role" = r."role_id"
-        // group by u.user_id, r.role_id`)
+        from tutorialhub.users u 
+        left join tutorialhub.roles r on u."role" = r."role_id"
+        left join tutorialhub.specialty s on u."specialty" = s."specialty_id" 
+        order by u."last_name";`)
 
         return results.rows
         // return results.rows.map(UserDTOtoUserConverter)
@@ -106,18 +99,32 @@ export async function getAllUsers() {
 }
 
 //get users by ID
-export async function findUserById(id: number): Promise<User>{
+export async function findUserById(id: number): Promise<User> {
     let client: PoolClient
     try {
         client = await connectionPool.connect()
-        let results: QueryResult = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", r."role_id", r."role", s."specialty_id", s."specialty", u."description", u."phone", u."image"
-        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where u.user_id = $1 ;`, [id])
+        let results: QueryResult = await client.query(`select 
+        u."user_id", 
+        u."username", 
+        u."password" , 
+        u."first_name", 
+        u."last_name", 
+        u."email", 
+        r."role_id", 
+        r."role", 
+        s."specialty_id", 
+        s."specialty", 
+        u."description", 
+        u."phone", 
+        u."image"
+        from tutorialhub.users u 
+        left join tutorialhub.roles r on u."role" = r.role_id 
+        left join tutorialhub.specialty s on u."specialty" = s.specialty_id 
+        where u.user_id = $1 ;`, [id])
         if (results.rowCount === 0) {
             throw new Error('User Not Found')
         } else {
             // return results.rows[0]
-
-
             // return results.rows[0].map(UserDTOtoUserConverter)
             return UserDTOtoUserConverter(results.rows[0])
         }
@@ -126,20 +133,35 @@ export async function findUserById(id: number): Promise<User>{
             throw new UserNotFoundError()
         }
         throw new Error('Unimplemented Error Handling')
-
     } finally {
         client && client.release()
     }
 }
-
 
 //get users by specialty
 export async function findUserBySpecialty(specialty: any) {
     let client: PoolClient
     try {
         client = await connectionPool.connect()
-        let results: QueryResult = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", r."role_id", r."role", s."specialty_id", s."specialty", u."description", u."phone", u."image"
-        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where s."specialty" = $1;`,[specialty])
+        let results: QueryResult = await client.query(`select 
+            u."user_id", 
+            u."username", 
+            u."password" , 
+            u."first_name", 
+            u."last_name", 
+            u."email", 
+            r."role_id", 
+            r."role", 
+            s."specialty_id", 
+            s."specialty", 
+            u."description", 
+            u."phone", 
+            u."image"
+            from tutorialhub.users u l
+            eft join tutorialhub.roles r on u."role" = r.role_id 
+            left join tutorialhub.specialty s on u."specialty" = s.specialty_id 
+            where s."specialty" = $1 order by u."last_name";`, [specialty])
+
         if (results.rowCount === 0) {
             throw new Error('User Not Found')
         } else {
@@ -165,8 +187,25 @@ export async function findUserByRole(role: any) {
     let client: PoolClient
     try {
         client = await connectionPool.connect()
-        let results: QueryResult = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", r."role_id", r."role", s."specialty_id", s."specialty", u."description", u."phone", u."image"
-        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where r."role" = $1;`,[role])
+        let results: QueryResult = await client.query(`select 
+            u."user_id", 
+            u."username", 
+            u."password" , 
+            u."first_name", 
+            u."last_name", 
+            u."email", 
+            r."role_id", 
+            r."role", 
+            s."specialty_id", 
+            s."specialty", 
+            u."description", 
+            u."phone", 
+            u."image"
+            from tutorialhub.users u 
+            left join tutorialhub.roles r on u."role" = r.role_id 
+            left join tutorialhub.specialty s on 
+            u."specialty" = s.specialty_id where r."role" = $1 order by u."specialty";`, [role])
+
         if (results.rowCount === 0) {
             throw new Error('User Not Found')
         } else {
@@ -210,10 +249,10 @@ export async function getUserByUsernameAndPassword(username: string, password: s
         if (results.rowCount === 0) {
             throw new Error('User Not Found')
         }
-        
+
         return results.rows[0]
         // return UserDTOtoUserConverter(results.rows[0])
-        
+
     } catch (e) {
         if (e.message === 'User Not Found') {
             throw new BadCredentialsError()
@@ -232,8 +271,22 @@ export async function updateUser(user: User): Promise<User> {
     let client: PoolClient
     try {
         client = await connectionPool.connect()
-        let userId = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", u."image", r."role_id", r."role", s."specialty_id", s."specialty"
-        from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where u.user_id = $1 ;`, [user.userId])
+        let userId = await client.query(`select 
+            u."user_id", u."username", 
+            u."password" , 
+            u."first_name", 
+            u."last_name", 
+            u."email", 
+            u."image", 
+            r."role_id", 
+            r."role", 
+            s."specialty_id", 
+            s."specialty"
+            from tutorialhub.users u 
+            left join tutorialhub.roles r on u."role" = r.role_id 
+            left join tutorialhub.specialty s on u."specialty" = s.specialty_id 
+            where u.user_id = $1 ;`, [user.userId])
+
         if (userId.rowCount === 0) {
             throw new Error('User Not Found')
         } else {
@@ -294,7 +347,6 @@ export async function updateUser(user: User): Promise<User> {
             console.log(updateResults.rows[0])
         }
 
-
         if (user.specialty != undefined) {
             console.log("found specialty");
 
@@ -310,20 +362,29 @@ export async function updateUser(user: User): Promise<User> {
             console.log(updateResults.rows[0])
         }
 
-        let result: QueryResult = await client.query(`select u.user_id, u.username , u."password", u.first_name,
-        u.last_name, u.email, u.phone, u.image, r.role_id , r."role", s."specialty" from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id 
-        left join tutorialhub.specialty s on u."specialty" = s."specialty_id"
-        where u.user_id = $1;`, [userId])
+        let result: QueryResult = await client.query(`select 
+            u.user_id, 
+            u.username, 
+            u."password", 
+            u.first_name,
+            u.last_name, 
+            u.email, 
+            u.phone, 
+            u.image, 
+            r.role_id, 
+            r."role", 
+            s."specialty" from tutorialhub.users u 
+            left join tutorialhub.roles r on u."role" = r.role_id 
+            left join tutorialhub.specialty s on u."specialty" = s."specialty_id"
+            where u.user_id = $1;`, [userId])
         await client.query('COMMIT;')
         return UserDTOtoUserConverter(result.rows[0])
         // return result.rows[0]
-
     } catch (e) {
         if (e.message === 'User Not Found') {
             throw new UserNotFoundError()
         }
         throw new Error(e)
-
     } finally {
         client && client.release()
     }

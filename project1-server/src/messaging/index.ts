@@ -4,6 +4,8 @@ const pubSubClient = new PubSub()
 
 export const userTopic = pubSubClient.topic('projects/sixth-tribute-279818/topics/user-service')
 
+
+
 // export const userTopic2 = getUserTopic()
 // //probably better, because it fetchs all the information from gcp about the topic
 // async function getUserTopic(){
