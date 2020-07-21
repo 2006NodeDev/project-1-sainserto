@@ -10,7 +10,7 @@ import { authorizationMiddleware } from '../middleware/authorization-middleware'
 export const userRouter = express.Router()
 // userRouter.use(authenticationMiddleware)
 
-userRouter.get('/', authorizationMiddleware(['admin']), async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/', authenticationMiddleware, authorizationMiddleware(['admin']), async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         let allUsers = await getAllUsersService()
