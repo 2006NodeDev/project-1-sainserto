@@ -106,7 +106,7 @@ export async function getAllUsers() {
 }
 
 //get users by ID
-export async function findUserById(id: number) {
+export async function findUserById(id: number): Promise<User>{
     let client: PoolClient
     try {
         client = await connectionPool.connect()
@@ -116,6 +116,9 @@ export async function findUserById(id: number) {
             throw new Error('User Not Found')
         } else {
             // return results.rows[0]
+
+
+            // return results.rows[0].map(UserDTOtoUserConverter)
             return UserDTOtoUserConverter(results.rows[0])
         }
     } catch (e) {
@@ -195,18 +198,22 @@ export async function getUserByUsernameAndPassword(username: string, password: s
                                         u."email", 
                                         u."phone",
                                         r."role",
+                                        s."specialty",
                                         u."description",
+
                                         u."image"
                                         from tutorialhub.users u 
                                         left join tutorialhub.roles r on u."role" = r.role_id
+                                        left join tutorialhub.specialty s on u."specialty" = s.specialty_id
                                             where u."username" = $1 and u."password" = $2;`,
             [username, password])
         if (results.rowCount === 0) {
             throw new Error('User Not Found')
         }
+        
         return results.rows[0]
         // return UserDTOtoUserConverter(results.rows[0])
-
+        
     } catch (e) {
         if (e.message === 'User Not Found') {
             throw new BadCredentialsError()
@@ -225,7 +232,7 @@ export async function updateUser(user: User): Promise<User> {
     let client: PoolClient
     try {
         client = await connectionPool.connect()
-        let userId = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", r."role_id", r."role", s."specialty_id", s."specialty"
+        let userId = await client.query(`select u."user_id", u."username", u."password" , u."first_name", u."last_name", u."email", u."image", r."role_id", r."role", s."specialty_id", s."specialty"
         from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id left join tutorialhub.specialty s on u."specialty" = s.specialty_id where u.user_id = $1 ;`, [user.userId])
         if (userId.rowCount === 0) {
             throw new Error('User Not Found')
@@ -268,6 +275,12 @@ export async function updateUser(user: User): Promise<User> {
             console.log(updateResults.rows[0])
         }
 
+        if (user.image != undefined) {
+            let updateResults = await client.query(`update tutorialhub.users 
+            set "image" = $1 where user_id = $2;`, [user.image, userId])
+            console.log(updateResults.rows[0])
+        }
+
         if (user.role != undefined) {
             let roleId = await client.query(`select r.role_id from tutorialhub.roles r where r.role = $1`, [user.role])
 
@@ -298,7 +311,7 @@ export async function updateUser(user: User): Promise<User> {
         }
 
         let result: QueryResult = await client.query(`select u.user_id, u.username , u."password", u.first_name,
-        u.last_name, u.email ,r.role_id , r."role", s."specialty" from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id 
+        u.last_name, u.email, u.phone, u.image, r.role_id , r."role", s."specialty" from tutorialhub.users u left join tutorialhub.roles r on u."role" = r.role_id 
         left join tutorialhub.specialty s on u."specialty" = s."specialty_id"
         where u.user_id = $1;`, [userId])
         await client.query('COMMIT;')
