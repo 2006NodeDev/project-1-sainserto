@@ -157,8 +157,8 @@ export async function findUserBySpecialty(specialty: any) {
             u."description", 
             u."phone", 
             u."image"
-            from tutorialhub.users u l
-            eft join tutorialhub.roles r on u."role" = r.role_id 
+            from tutorialhub.users u 
+            left join tutorialhub.roles r on u."role" = r.role_id 
             left join tutorialhub.specialty s on u."specialty" = s.specialty_id 
             where s."specialty" = $1 order by u."last_name";`, [specialty])
 
