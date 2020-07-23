@@ -41,6 +41,7 @@ function App() {
         <Route path='/specialty/:specialty' component={DisplayBySpecialtyComponent}/>
         <Route path='/role/:role' component={DisplayByRoleComponent}/>
         <Route path='/logout' component={LogOutComponent} />
+        
 
 
         <ToastContainer position='bottom-right'/>

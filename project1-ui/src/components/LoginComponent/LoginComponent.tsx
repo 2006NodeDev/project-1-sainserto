@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { tutorialhubLogin } from '../../remote/tutorialhub-api/tutorialhub-login'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Container } from '@material-ui/core'
+import { Grid, Container, FormControlLabel } from '@material-ui/core'
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -13,58 +13,97 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Checkbox from '@material-ui/core/Checkbox';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+        backgroundColor: "#5A189A",
+        fontSize: 16,
+        color: "white",
+        '&:hover': {
+          backgroundColor: "#3C096C"
+        }
+    },
+}));
+
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+        </Typography>
+    );
+}
 
 interface ILoginProps extends RouteComponentProps {
     changeCurrentUser: (newUser: any) => void
 }
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        '& > *': {
-            margin: theme.spacing(0),
-        },
-    },
-    container: {
-        paddingTop: theme.spacing(10),
-        paddingBottom: theme.spacing(4),
-    },
-    grid: {
-        padding: theme.spacing(5),
-        margin: 'auto',
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         display: 'flex',
+//         '& > *': {
+//             margin: theme.spacing(0),
+//         },
+//     },
+//     container: {
+//         paddingTop: theme.spacing(10),
+//         paddingBottom: theme.spacing(4),
+//     },
+//     grid: {
+//         padding: theme.spacing(5),
+//         margin: 'auto',
+//         display: 'flex',
+//         overflow: 'auto',
+//         flexDirection: 'column',
+//         flexWrap: 'wrap',
 
-    },
-    fixedHeight: {
-        height: 600,
-    },
-    form: {
-        width: '100%',
-        marginTop: theme.spacing(3),
-    },
-    mainButton: {
-        backgroundColor: "#A74482",
-        fontSize: 16,
-        margin: theme.spacing(3, 0, 2),
-        '&:hover': {
-            backgroundColor: "#422951"
-        }
-    },
-    margin: {
-        margin: theme.spacing(1),
-    },
-    withoutLabel: {
-        marginTop: theme.spacing(3),
-    },
-    textField: {
-        width: '25ch',
-    },
+//     },
+//     fixedHeight: {
+//         height: 600,
+//     },
+//     form: {
+//         width: '100%',
+//         marginTop: theme.spacing(3),
+//     },
+// mainButton: {
+//     backgroundColor: "#A74482",
+//     fontSize: 16,
+//     margin: theme.spacing(3, 0, 2),
+//     '&:hover': {
+//         backgroundColor: "#422951"
+//     }
+// },
+//     margin: {
+//         margin: theme.spacing(1),
+//     },
+//     withoutLabel: {
+//         marginTop: theme.spacing(3),
+//     },
+//     textField: {
+//         width: '25ch',
+//     },
 
-}));
+// }));
 
 interface State {
     amount: string;
@@ -113,62 +152,85 @@ export const LoginComponent: FunctionComponent<ILoginProps> = (props) => {
         e.preventDefault()
         let res = await tutorialhubLogin(username, password)
 
-        if (res.userId) {
-            props.history.push("/login")
-            console.log("login page dapat");
-          
-            
-            
-        } else {
+        if (res.username && res.password) {
             props.changeCurrentUser(res)
             changePassword('')
             props.history.push("/home")
             console.log("home dapat");
-            console.log(res.userId);
-        
-            
 
-            
+        } else {
+            props.history.push("/login")
+            console.log("login page dapat");
+
+            console.log(res.userId);
+
+
+
+
             // props.history.push('/')
         }
     }
 
     return (
-        <div>
-            <Container maxWidth="lg" className={classes.container}>
-                <form className={classes.form} autoComplete="off" onSubmit={loginSubmit}>
-                    <Grid container spacing={5}>
-                        <Grid item xs={10} sm={4} md={4} lg={3} className={classes.grid}>
-                            <TextField id="standard-basic" label="Username" variant="outlined" value={username} onChange={updateUsername} />
-                            {/* <TextField id="standard-basic" type='password' label="Password" value={password} onChange={updatePassword} /> */}
-                            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    type={values.showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={updatePassword}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    labelWidth={70}
-                                />
-                            </FormControl>
-                            <Button className={classes.mainButton} type='submit' variant="contained" color="primary">Log in</Button>
-                            <Link to='/signup'>Register</Link>
+
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+
+            <Typography variant="h4" color="textSecondary" align="center">
+                FIND MY TUTOR
+        </Typography>
+            <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                    Sign in
+        </Typography>
+                <form onSubmit={loginSubmit} className={classes.form} noValidate>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        value={username}
+                        onChange={updateUsername}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={updatePassword}
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Sign In
+                    </Button>
+                    <Grid container>
+                        <Grid item>
+                            <Link to='/signup'>
+                                {"Don't have an account? Sign Up"}
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>
-            </Container>
-        </div>
+            </div>
+            <Box mt={8}>
+
+            </Box>
+        </Container>
     )
 }

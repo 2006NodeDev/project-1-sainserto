@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 const messageTemplate = {
     from: process.env['EMAIL'],
     to: '',
-    subject: 'Welcome to Tutorial Hub',
+    subject: 'Welcome to FindMyTutor',
     text:'Enjoy learning!'
 }
 

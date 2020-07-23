@@ -10,13 +10,14 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     mainButton: {
-        backgroundColor: "#A74482",
-        fontSize: 16,
         margin: theme.spacing(3, 0, 2),
+        backgroundColor: "#5A189A",
+        fontSize: 16,
+        color: "white",
         '&:hover': {
-            backgroundColor: "#422951"
+          backgroundColor: "#3C096C"
         }
-    }
+    },
 
 }))
 
@@ -43,21 +44,24 @@ export const SpecialtyListComponent: FunctionComponent<any> = (props) => {
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <form onSubmit={specialtySubmit}>
-
-                    <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
-                    <div>{`inputValue: '${inputValue}'`}</div>
+                    {/* <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
+                    <div>{`inputValue: '${inputValue}'`}</div> */}
                     <br />
-                    <Grid container spacing={3}
+                    <h3>What do you need help with?</h3>
+                    <Grid container 
                         direction="row"
                         justify="center"
                         alignItems="center">
-                        <Grid item xs={12} sm={12}>
+                        <Grid item>
                             <Autocomplete
+                            fullWidth
                                 value={value}
                                 onKeyPress={handleKeyPress}
                                 onChange={(event: any, newValue: string | null) => {
                                     setValue(newValue);
                                 }}
+                                autoHighlight
+      getOptionLabel={(option) => option}
                                 inputValue={inputValue}
                                 onInputChange={(event, newInputValue) => {
                                     setInputValue(newInputValue);
@@ -65,10 +69,11 @@ export const SpecialtyListComponent: FunctionComponent<any> = (props) => {
                                 id="controllable-states-demo"
                                 options={options}
                                 style={{ width: 300 }}
-                                renderInput={(params) => <TextField {...params} label="Controllable" variant="outlined" />}
-                            /></Grid>
-                        <Grid item xs={12} sm={12}>
-
+                                renderInput={(params) => <TextField {...params} label="Search" variant="outlined" />}
+                            />
+                            </Grid>
+                        
+                            <Grid item xs={12} sm={12}>
                             <Button
                             className={classes.mainButton}
                                 component={React.forwardRef<HTMLAnchorElement, Partial<LinkProps>>(
@@ -79,11 +84,11 @@ export const SpecialtyListComponent: FunctionComponent<any> = (props) => {
                             >
                                 GO
                             </Button>
-
+</Grid>
                             
                             
                             {/* <Link to={`/specialty/${value}`}><Button className={classes.mainButton} variant="contained" color="primary">GO</Button></Link> */}
-                        </Grid>
+                        
                     </Grid>
                 </form>
             </Container>

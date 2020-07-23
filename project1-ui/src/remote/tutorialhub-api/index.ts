@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { lbBaseUrl } from '../../environment'
+import { fmtBaseUrl } from '../../environment'
 
 
 export const tutorialhubClient = axios.create({
-    baseURL:lbBaseUrl,
+    baseURL:fmtBaseUrl,
     headers:{
         'Content-Type': 'application/json'
     },

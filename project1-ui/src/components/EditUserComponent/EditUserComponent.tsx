@@ -59,14 +59,14 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     mainButton: {
-        backgroundColor: "#A74482",
-        fontSize: 16,
-        color:"white",
         margin: theme.spacing(3, 0, 2),
+        backgroundColor: "#5A189A",
+        fontSize: 16,
+        color: "white",
         '&:hover': {
-            backgroundColor: "#422951"
+          backgroundColor: "#3C096C"
         }
-    }
+    },
 }));
 
 
@@ -217,14 +217,14 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
                 <form className={classes.form} autoComplete="off" onSubmit={editUserSubmit}>
                     <Grid container spacing={5}>
                         <Grid item xs={12} sm={6} md={12} lg={6} className={classes.grid}>
-                            <TextField label="Username" value={username} onChange={updateUsername} />
-                            <TextField label="Password" type="password" value={password} onChange={updatePassword} />
-                            <TextField label="First Name" value={firstName} onChange={updateFirstName} />
-                            <TextField label="Last Name" value={lastName} onChange={updateLastName} />
-                            <TextField type="Email" label="Email" value={email} onChange={updateEmail} />
-                            <TextField label="Phone" type="tel" value={phone} onChange={updatePhone} />
+                            <TextField variant="outlined" margin="normal" fullWidth label="Username" value={username} onChange={updateUsername} />
+                            <TextField variant="outlined" margin="normal" fullWidth label="Password" type="password" value={password} onChange={updatePassword} />
+                            <TextField variant="outlined" margin="normal" fullWidth label="First Name" value={firstName} onChange={updateFirstName} />
+                            <TextField variant="outlined" margin="normal" fullWidth label="Last Name" value={lastName} onChange={updateLastName} />
+                            <TextField variant="outlined" margin="normal" fullWidth type="Email" label="Email" value={email} onChange={updateEmail} />
+                            <TextField variant="outlined" margin="normal" fullWidth label="Phone" type="tel" value={phone} onChange={updatePhone} />
                             <FormControl className={classes.formControl}>
-                                <InputLabel htmlFor="age-native-simple">Role</InputLabel>
+                                <InputLabel htmlFor="age-native-simple">Are you a tutor?</InputLabel>
                                 <Select
                                     native
                                     value={role}
@@ -235,8 +235,8 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
                                     }}
                                 >
                                     <option aria-label="None" value="" />
-                                    <option value="tutor">Tutor</option>
-                                    <option value="student">Student</option>
+                                    <option value="tutor">Yes</option>
+                                    <option value="student">No</option>
                                 </Select>
                             </FormControl>
 
@@ -262,7 +262,7 @@ export const EditUserComponent: FunctionComponent<any> = (props) => {
 
                                 </Select>
                             </FormControl>
-                            <TextField label="Description" value={description} onChange={updateDescription} />
+                            <TextField variant="outlined" margin="normal" fullWidth label="Description" value={description} onChange={updateDescription} />
                             <input accept="image/*" id="icon-button-file" type="file" onChange={updateImage} />
                             <label htmlFor='icon-button-file'>
                             </label>

@@ -39,14 +39,14 @@ export const ProfileComponent: FunctionComponent<any> = (props) => {
 
 
     return (
-        (userProfile) ?
+            (userProfile) ?
 
             <UserDisplayComponent user={userProfile} />
             :
             <div>
                 <h3>User Not Found</h3>
             </div>
-
+        
     )
 
 

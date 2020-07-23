@@ -85,13 +85,12 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
         }
         newUser.role = role || "student"
         newUser.specialty = specialty || "none"
-        newUser.image = image || undefined
 
-        // if(newUser.role = "student"){
-        //     newUser.specialty = "none"
-        // }else{
-        //     newUser.specialty = specialty || "none"
-        // }
+        if(newUser.role = "student"){
+            newUser.specialty = "none"
+        }else{
+            newUser.specialty = specialty || "none"
+        }
 
         try {
             let savedUser = await saveOneUserService(newUser)
@@ -112,10 +111,8 @@ userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
 userRouter.patch('/', authenticationMiddleware, async (req:Request, res:Response, next: NextFunction) => {
 
     let{userId, username, password, firstName, lastName, email, phone, role, specialty, description, image} = req.body
-
-
-    if((userId = Number && userId)){
-        let updatedUser: User = {
+    if(userId){
+        let user: User = {
             username,
             userId,
             password,
@@ -129,21 +126,25 @@ userRouter.patch('/', authenticationMiddleware, async (req:Request, res:Response
             image
         }
 
-        updatedUser.username = username || undefined
-        updatedUser.firstName = firstName || undefined
-        updatedUser.lastName = lastName || undefined
-        updatedUser.password = password || undefined
-        updatedUser.email = email || undefined
-        updatedUser.phone = phone || undefined
-        updatedUser.role = role || undefined
-        updatedUser.specialty = specialty || undefined
-        updatedUser.description = description || undefined
+        user.username = username || undefined
+        user.firstName = firstName || undefined
+        user.lastName = lastName || undefined
+        user.password = password || undefined
+        user.email = email || undefined
+        user.phone = phone || undefined
+        user.role = role || undefined
+        user.description = description || undefined
+        if(user.role = "student"){
+            user.specialty = "none" || undefined
+        }else{
+            user.specialty = specialty || "none"
+        }
 
         if(req.session.user.user_id == userId || req.session.user.role === 'admin'){
         try{
-            await updateUserService(updatedUser)
-            res.json(updatedUser)
-            console.log("user updated" + updatedUser);
+            await updateUserService(user)
+            res.json(user)
+            console.log("user updated" + user);
             
         }catch(e){
             next(e)

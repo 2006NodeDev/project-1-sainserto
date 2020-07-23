@@ -56,11 +56,12 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(3),
         },
         mainButton: {
-            backgroundColor: "#A74482",
-            fontSize: 16,
             margin: theme.spacing(3, 0, 2),
+            backgroundColor: "#5A189A",
+            fontSize: 16,
+            color: "white",
             '&:hover': {
-                backgroundColor: "#422951"
+              backgroundColor: "#3C096C"
             }
         },
         bullet: {
@@ -80,6 +81,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         selectEmpty: {
             marginTop: theme.spacing(2),
+        },
+        paper: {
+            marginTop: theme.spacing(8),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
         },
     }),
 );
@@ -220,10 +227,10 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
 
     return (
 
-        <div>
-            <Container component="main" maxWidth="xs">
+       
+                 <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <div className={classes.root}>
+            <div className={classes.paper}>
                 {/* <Container maxWidth="xs" className={classes.container}> */}
                     <form className={classes.form} autoComplete="off" onSubmit={submitUser}>
                         <Grid container spacing={2}
@@ -258,7 +265,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                             <Grid item xs={12} sm={6}>
 
                                 <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="age-native-simple">Role</InputLabel>
+                                    <InputLabel htmlFor="age-native-simple">I am a..</InputLabel>
                                     <Select
 
                                         native
@@ -312,7 +319,7 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                                         <Typography>
                                             <label htmlFor='file'>Upload a profile picture</label>
                                         </Typography>
-                                        <input type='file' name='file' accept='image/*' onChange={updateImage} />
+                                        <input required type='file' name='file' accept='image/*' onChange={updateImage} />
                                         <img src={image} />
                                     </CardContent>
                                 </Card>
@@ -326,6 +333,5 @@ export const NewUserComponent: FunctionComponent<any> = (props) => {
                 {/* </Container> */}
             </div>
             </Container>
-        </div >
     )
 }

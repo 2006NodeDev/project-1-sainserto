@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import { Avatar, Chip } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -22,64 +22,98 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid, { GridSpacing } from '@material-ui/core/Grid';
 import { EditUserComponent } from '../EditUserComponent/EditUserComponent';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
+
+
 
 interface IUserDisplayProps {
   user: User
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: 345,
-      flexGrow: 1,
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    width: 500,
+    height: 450,
+  },
+  icon: {
+    marginRight: theme.spacing(2),
+    color: 'rgba(255, 255, 255, 0.54)',
+
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+  },
+  mainButton: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#5A189A",
+    fontSize: 16,
+    color: "white",
+    '&:hover': {
+      backgroundColor: "#3C096C"
     },
-    control: {
-      padding: theme.spacing(2),
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-    avatar: {
-      backgroundColor: red[500],
-    },
-    large: {
-      width: theme.spacing(7),
-      height: theme.spacing(7),
-    },
-    paper: {
-      backgroundColor: '#cccccc'
-    },
-    mainButton: {
-      backgroundColor: "#A74482",
-      fontSize: 16,
-      color: "white",
-      margin: theme.spacing(3, 0, 2),
-      '&:hover': {
-        backgroundColor: "#422951"
-      }
-    }
-  }),
-);
+},
+chipColor:{
+  backgroundColor: "#9D4EDD"
+}
+}));
+
+// const cards = [1,2,3];
+
+
 
 export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  let buttonGroup = []
 
 
 
   const handleExpandClick = () => {
-
     setExpanded(!expanded);
   };
 
@@ -90,62 +124,48 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
     setSpacing(Number((event.target as HTMLInputElement).value) as GridSpacing);
   };
 
+  const { userId } = useParams()
+
+  if (props.user.userId == userId || props.user.role === 'admin') {
+    buttonGroup.push(
+      <Button key="buttonEdit" variant='contained' className={classes.mainButton} color='inherit' component={RouterLink} to={`../edit/${(props.user) ? props.user.userId : '0'}`}>Edit</Button>
+    )
+  }
+
   return (
-    <div className={classes.root}>
-      <Grid container spacing={10}>
-        <Grid item xs={12} sm={12}>
-          <Card className={classes.root}>
-            <Grid item xs={6}>
-              <CardHeader
-                avatar={
-                  <Avatar alt={props.user.username} src={props.user.image} className={classes.large} />
-                }
-              // action={
-              //   <IconButton aria-label="settings">
-              //     <MoreVertIcon />
-              //   </IconButton>
-              // }
-
-              />
-            </Grid>
-
-
-
-            {props.user.image ? (
-               <CardMedia
-               className={classes.media}
-               image={props.user.image}
-               title="Paella dish"
-             />
-            ) : (
-               <h3>IDKWHATTHISISSUPPOSEDTOBE</h3>
-              )}
-
-            {/* <CardMedia
+    <Container className={classes.cardGrid} maxWidth="md">
+      <Grid container spacing={4}>
+        <Grid item key={userId} xs={12} sm={6} md={4}>
+          <Card className={classes.card}>
+            <CardMedia
               className={classes.media}
               image={props.user.image}
-              title="Paella dish"
-            /> */}
-            <CardContent>
+              title="user image"
+            />
+            <CardContent className={classes.cardContent}>
               <Typography variant="h6" gutterBottom>
                 {props.user.firstName} {props.user.lastName}
               </Typography>
+
               <Typography variant="overline" display="block" gutterBottom>
-                I can help you with: <Chip size="small" color="primary" label={props.user.specialty} />
+                I can help you with: <Chip size="small" color="primary" className={classes.chipColor} label={props.user.specialty} />
               </Typography>
 
 
               <Typography variant="body2" color="textSecondary" component="p">
                 {props.user.description}
               </Typography>
+
+
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
+              {/* <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
               </IconButton>
-              {/* <IconButton aria-label="share">
+              <IconButton aria-label="share">
             <ShareIcon />
           </IconButton> */}
+        {buttonGroup}
 
               <IconButton
                 className={clsx(classes.expand, {
@@ -158,10 +178,6 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
-
-
-
-            
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography variant="subtitle2" gutterBottom>
@@ -173,10 +189,12 @@ export const UserDisplayComponent: FunctionComponent<IUserDisplayProps> = (props
               </CardContent>
             </Collapse>
           </Card>
-          <Button variant='contained' className={classes.mainButton} color='inherit' component={RouterLink} to={`../edit/${(props.user) ? props.user.userId : '0'}`}>Edit</Button>
-          {/* <Link to={`edit/${(props.user) ? props.user.userId : '0'}`}>hi</Link> */}
         </Grid>
+
       </Grid>
-    </div>
+      <Grid container>
+        {/* {buttonGroup} */}
+      </Grid>
+    </Container>
   )
 }

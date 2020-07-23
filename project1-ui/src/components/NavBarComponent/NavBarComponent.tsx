@@ -6,6 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
+
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 // import InboxIcon from '@material-ui/icons/MoveToInbox';
 // import MailIcon from '@material-ui/icons/Mail';
-import { Router, Route, Link } from 'react-router-dom'
+import {Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 
 // import MenuItem from '@material-ui/core/MenuItem'
@@ -84,8 +85,16 @@ const useStyles = makeStyles((theme: Theme) =>
     main: {
       backgroundColor: "#422951"
     },
+    footer: {
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(6),
+    },
+    navColor:{
+      backgroundColor: "#5A189A"
+    }
   }),
 );
+
 
 export const NavBarComponent: FunctionComponent<any> = (props) => {
 
@@ -117,24 +126,24 @@ export const NavBarComponent: FunctionComponent<any> = (props) => {
 
     listItems.push(
       <ListItem button component={Link} key="listItem1" to='/home'>
-        <ListItemText >Home</ListItemText>
+        <ListItemText >Find My Tutor</ListItemText>
       </ListItem>,
       <ListItem button component={Link} key="listItem2" to={`/profile/${(props.user) ? props.user.user_id : '0'}`}>
         <ListItemText >My Profile</ListItemText>
       </ListItem>,
       <ListItem button component={Link} key="listItem3" to='/role/tutor'>
         <ListItemText >All Tutors</ListItemText>
-      </ListItem>,
-      <ListItem button component={Link} key="listItem4" to='/findtutor'>
-        <ListItemText >Find A Tutor</ListItemText>
-      </ListItem>,
-      <ListItem button component={Link} key="listItem5" to='/bookmarks'>
-        <ListItemText >Bookmarks</ListItemText>
       </ListItem>
+      // <ListItem button component={Link} key="listItem4" to='/findtutor'>
+      //   <ListItemText >Find A Tutor</ListItemText>
+      // </ListItem>,
+      // <ListItem button component={Link} key="listItem5" to='/bookmarks'>
+      //   <ListItemText >Bookmarks</ListItemText>
+      // </ListItem>
       // <ListItem button component={LogOutComponent} key="listItem6">
       //   <ListItemText >Log Out</ListItemText>
       // </ListItem>
-      )
+    )
     menuItems.push(
 
       <ListItem button component={Link} key="listItem7" to={`/profile/${(props.user) ? props.user.user_id : '0'}`}>
@@ -157,13 +166,13 @@ export const NavBarComponent: FunctionComponent<any> = (props) => {
   else {
     listItems.push(
       <ListItem button component={Link} key="listItem8" to='/login'>
-        <ListItemText >Log in</ListItemText>
+        <ListItemText >Sign in</ListItemText>
       </ListItem>,
       <ListItem button component={Link} key="listItem9" to='/signup'>
         <ListItemText >Sign Up</ListItemText>
       </ListItem>)
     menuItems.push(
-      <Button color="inherit" key="menuItem1" href="/login">Log In</Button>,
+      <Button color="inherit" key="menuItem1" href="/login">Sign In</Button>,
       <Button color="inherit" key="menuItem2" href="/signup">Sign Up</Button>)
 
 
@@ -172,13 +181,13 @@ export const NavBarComponent: FunctionComponent<any> = (props) => {
   if (props.user && props.user.role === 'admin') {
     listItems.push(
       <ListItem button component={Link} to='/users'>
-        <ListItemText >All Users</ListItemText>
+        <ListItemText key="listItem10">All Users</ListItemText>
       </ListItem>)
   }
 
 
   return (
-    <div className={classes.root}>
+    <div>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -187,10 +196,10 @@ export const NavBarComponent: FunctionComponent<any> = (props) => {
         })}
       >
 
-        <Toolbar className={classes.main}>
+        <Toolbar className={classes.navColor}>
           {menuItems}
           <Typography variant="h6" className={classes.title}>
-            TUTORIALHUB
+            
         </Typography>
 
           <IconButton
@@ -253,6 +262,7 @@ export const NavBarComponent: FunctionComponent<any> = (props) => {
           ))}
         </List> */}
       </Drawer>
+  
     </div>
   )
 }
